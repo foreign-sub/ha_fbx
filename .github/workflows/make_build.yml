@@ -26,7 +26,7 @@ jobs:
           sudo cp /tmp/packer-builder-arm-image/packer-builder-arm-image /usr/bin
           curl https://cloud.debian.org/images/cloud/buster/20200210-166/debian-10-generic-arm64-20200210-166.qcow2 -o /tmp/debian-arm64.qcow2
           qemu-img convert /tmp/debian-arm64.qcow2 /tmp/debian-arm64.img
-          - name: Build image ${{ env.VERSION }}
+      - name: Build image ${{ env.VERSION }}
         run: |
           cd tasks && sudo /usr/bin/packer build ha_fbx_arm64.json
       - name: Clean
