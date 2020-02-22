@@ -3,6 +3,7 @@
         {
             "name": "ha_fbx",
             "type": "arm-image",
+            "image_type": "Kali",
             "iso_url": "https://cloud.debian.org/images/cloud/buster/20200210-166/debian-10-generic-arm64-20200210-166.qcow2",
             "iso_checksum_type": "sha256",
             "iso_checksum": "4a9f24fbe8bee17611fb9808ffb3c74920c0feb84563322be31606cb154eef11",
