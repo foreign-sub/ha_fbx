@@ -1,0 +1,39 @@
+{
+    "builders": [
+        {
+            "name": "ha_fbx",
+            "type": "arm-image",
+            "iso_url": "https://cloud.debian.org/images/cloud/buster/20200210-166/debian-10-generic-arm64-20200210-166.tar.xz",
+            "target_image_size": 3221225472,
+            "qemu_binary": "qemu-aarch64-static"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "inline": [
+                "sed -i 's/^\\([^#]\\)/#\\1/g' /etc/ld.so.preload",
+                "dpkg-architecture",
+                "apt-get -y update",
+                "apt-get install -y ansible"
+            ]
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "chmod +x /usr/bin/*"
+            ]
+        },
+        {
+            "type": "ansible-local",
+            "playbook_file": "ha_fbx.yml",
+            "command": "ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook"
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "sed -i 's/^#\\(.+\\)/\\1/g' /etc/ld.so.preload"
+            ]
+        }
+    ]
+}
