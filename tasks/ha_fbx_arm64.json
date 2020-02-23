@@ -1,7 +1,7 @@
 {
     "builders": [
         {
-            "name": "ha_fbx",
+            "name": "hafbx",
             "type": "arm-image",
             "image_type": "kali",
             "iso_url": "/tmp/debian-arm64.img",
