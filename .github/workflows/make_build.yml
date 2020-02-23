@@ -27,8 +27,9 @@ jobs:
           cd /tmp/packer-builder-arm-image && git checkout testing
           cd /tmp/packer-builder-arm-image && go get -d ./... && go build
           sudo cp /tmp/packer-builder-arm-image/packer-builder-arm-image /usr/bin
-          curl ${UBU_IMG} -o /tmp/arm64.qcow2
+          curl ${DEB_IMG} -o /tmp/arm64.qcow2
           qemu-img convert /tmp/arm64.qcow2 /home/runner/work/ha_fbx/arm64.img
+          #
           #curl ${UBU_IMG} -o /home/runner/work/ha_fbx/arm64.img
       - name: Build image ${{ env.VERSION }}
         run: |
