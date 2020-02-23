@@ -43,6 +43,7 @@
     ],
     "provisioners": [
         {
+            "execute_command": "/bin/chmod +x {{ .Path }}; {{ .Vars }} {{ .Path }}",
             "type": "shell",
             "inline": [
                 "sed -i 's/^\\([^#]\\)/#\\1/g' /etc/ld.so.preload",
