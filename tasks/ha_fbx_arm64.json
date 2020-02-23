@@ -5,7 +5,7 @@
             "type": "arm-image",
             "image_type": "kali",
             "image_mounts": ["/boot/efi", "/"],
-            "iso_url": "/tmp/debian-arm64.img",
+            "iso_url": "/home/runner/work/ha_fbx/debian-arm64.img",
             "iso_checksum_type": "none",
             "qemu_binary": "qemu-aarch64-static"
         }
