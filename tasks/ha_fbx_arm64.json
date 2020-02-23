@@ -3,7 +3,8 @@
         {
             "name": "hafbx",
             "type": "arm-image",
-            "image_type": "raspberrypi",
+            "image_type": "kali",
+            "image_mounts": ["/boot/efi", "/"],
             "iso_url": "/tmp/debian-arm64.img",
             "iso_checksum_type": "none",
             "qemu_binary": "qemu-aarch64-static"
