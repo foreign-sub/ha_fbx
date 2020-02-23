@@ -35,7 +35,7 @@
                 "/",
                 "/boot/efi"
             ],
-            "iso_url": "/home/runner/work/ha_fbx/debian-arm64.img",
+            "iso_url": "/home/runner/work/ha_fbx/arm64.img",
             "iso_checksum_type": "none",
             "mount_path": "/tmp/mnt",
             "qemu_binary": "qemu-aarch64-static"

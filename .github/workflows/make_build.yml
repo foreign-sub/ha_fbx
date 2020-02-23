@@ -17,6 +17,8 @@ jobs:
           sudo apt-get install kpartx qemu-user-static qemu-utils
       - name: Packer setup ${{ env.VERSION }}
         run: |
+          DEB_IMG="https://cloud.debian.org/images/cloud/buster/20200210-166/debian-10-generic-arm64-20200210-166.qcow2"
+          UBU_IMG="https://cloud-images.ubuntu.com/eoan/current/eoan-server-cloudimg-arm64.img"
           PACKER_VERSION="1.5.4"
           curl https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip -o /tmp/packer.zip
           unzip /tmp/packer.zip -d /tmp
@@ -24,8 +26,9 @@ jobs:
           git clone https://github.com/solo-io/packer-builder-arm-image /tmp/packer-builder-arm-image
           cd /tmp/packer-builder-arm-image && go get -d ./... && go build
           sudo cp /tmp/packer-builder-arm-image/packer-builder-arm-image /usr/bin
-          curl https://cloud.debian.org/images/cloud/buster/20200210-166/debian-10-generic-arm64-20200210-166.qcow2 -o /tmp/debian-arm64.qcow2
-          qemu-img convert /tmp/debian-arm64.qcow2 /home/runner/work/ha_fbx/debian-arm64.img
+          #curl ${DEB_IMG} -o /tmp/debian-arm64.qcow2
+          #qemu-img convert /tmp/debian-arm64.qcow2 /home/runner/work/ha_fbx/arm64.img
+          curl ${UBU_IMG} -o /home/runner/work/ha_fbx/arm64.img
       - name: Build image ${{ env.VERSION }}
         run: |
           mkdir -p /tmp/mnt
