@@ -42,9 +42,9 @@
       apt:
         update_cache: yes
 
-    - name: upgrade apt distro
-      apt:
-        upgrade: dist
+    #- name: upgrade apt distro
+    #  apt:
+    #    upgrade: dist
 
     - name: install packages
       apt:
