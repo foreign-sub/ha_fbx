@@ -1,4 +1,7 @@
 {
+    "variables": {
+        "img_mount_path": "/tmp/mnt"
+    },
     "builders": [
         {
             "name": "hafbx",
@@ -37,11 +40,16 @@
             ],
             "iso_url": "/home/runner/work/ha_fbx/arm64.img",
             "iso_checksum_type": "none",
-            "mount_path": "/tmp/mnt",
+            "mount_path": "{{ user `img_mount_path` }}",
             "qemu_binary": "qemu-aarch64-static"
         }
     ],
     "provisioners": [
-
+        {
+            "type": "shell-local",
+            "inline": [
+                "sudo -E ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook -i '{{ user `img_mount_path` }}', -v -c chroot /home/runner/work/ha_fbx/tasks/ha_fbx.yml"
+            ]
+        }
     ]
 }
