@@ -1,6 +1,7 @@
 {
     "variables": {
-        "img_mount_path": "/tmp/mnt"
+        "img_mount_path": "/tmp/mnt",
+        "playbook": "ha_fbx.yml"
     },
     "builders": [
         {
@@ -48,7 +49,7 @@
         {
             "type": "shell-local",
             "inline": [
-                "sudo -E ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook -i '{{ user `img_mount_path` }}', -v -c chroot ha_fbx.yml"
+                "sudo -E ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook -i '{{ user `img_mount_path` }}', -v -c chroot {{ user `playbook` }}"
             ]
         }
     ]
