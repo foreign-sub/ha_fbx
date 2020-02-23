@@ -5,7 +5,7 @@
   vars:
     ha_user: ha
     ha_port: 8123
-    ha_conf_dir: /opt/home-assistant
+    #ha_conf_dir: /opt/home-assistant
     ha_fbx:
       hostname: "{{ lookup('env', 'HOSTNAME') | default('ha_fbx', true) }}"
       version: "{{ lookup('env', 'VERSION') | default('master', true) }}"
