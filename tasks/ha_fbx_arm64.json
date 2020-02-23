@@ -3,8 +3,38 @@
         {
             "name": "hafbx",
             "type": "arm-image",
+            "chroot_mounts": [
+                [
+                    "proc",
+                    "proc",
+                    "/proc"
+                ],
+                [
+                    "sysfs",
+                    "sysfs",
+                    "/sys"
+                ],
+                [
+                    "bind",
+                    "/dev",
+                    "/dev"
+                ],
+                [
+                    "devpts",
+                    "devpts",
+                    "/dev/pts"
+                ],
+                [
+                    "binfmt_misc",
+                    "binfmt_misc",
+                    "/proc/sys/fs/binfmt_misc"
+                ]
+            ],
             "image_type": "raspberrypi",
-            "image_mounts": ["/", "/boot/efi"],
+            "image_mounts": [
+                "/",
+                "/boot/efi"
+            ],
             "iso_url": "/home/runner/work/ha_fbx/debian-arm64.img",
             "iso_checksum_type": "none",
             "mount_path": "/tmp/mnt",
