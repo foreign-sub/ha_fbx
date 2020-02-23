@@ -28,6 +28,8 @@ jobs:
           qemu-img convert /tmp/debian-arm64.qcow2 /home/runner/work/ha_fbx/debian-arm64.img
       - name: Build image ${{ env.VERSION }}
         run: |
+          sudo mkdir /mnt/boot
+          sudo mkdir /mnt/boot/efi
           cd tasks && sudo /usr/bin/packer build ha_fbx_arm64.json
       - name: Clean
         run: |
