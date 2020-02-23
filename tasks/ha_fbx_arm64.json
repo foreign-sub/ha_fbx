@@ -48,7 +48,7 @@
         {
             "type": "shell-local",
             "inline": [
-                "sudo -E ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook -i '{{ user `img_mount_path` }}', -v -c chroot /home/runner/work/ha_fbx/tasks/ha_fbx.yml"
+                "sudo -E ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook -i '{{ user `img_mount_path` }}', -v -c chroot ha_fbx.yml"
             ]
         }
     ]

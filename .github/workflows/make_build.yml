@@ -33,6 +33,7 @@ jobs:
       - name: Build image ${{ env.VERSION }}
         run: |
           mkdir -p /tmp/mnt
+          pwd
           cd tasks && sudo /usr/bin/packer build ha_fbx_arm64.json
       - name: Clean
         run: |
