@@ -73,6 +73,9 @@
           {{ pip_packages | default({}) | combine( { item.split()[0]: item.split()[1] } ) }}
       with_items: "{{ pip_output.stdout_lines }}"
 
+    - name: disable ModemManager
+      command: systemctl disable ModemManager
+
     - name: docker setup
       command: "curl -fsSL get.docker.com | sh"
 

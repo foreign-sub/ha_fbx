@@ -3,7 +3,7 @@
         {
             "name": "ha_fbx",
             "type": "arm-image",
-            "image_type": "Kali",
+            "image_type": "kali",
             "iso_url": "/tmp/debian-arm64.img",
             "iso_checksum_type": "none",
             "target_image_size": 3221225472,
