@@ -14,7 +14,7 @@ jobs:
         run: |
           export TERM=linux
           sudo apt-get update
-          sudo apt-get install kpartx qemu-user-static
+          sudo apt-get install kpartx qemu-user-static qemu-utils
       - name: Packer setup ${{ env.VERSION }}
         run: |
           PACKER_VERSION="1.5.4"
