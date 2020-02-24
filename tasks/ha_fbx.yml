@@ -3,6 +3,9 @@
     - 127.0.0.1
   become: yes
   vars:
+    supervisor_share: "/usr/share/hassio"   #Default
+    privileged_mode: False   #Default
+    version: latest   #Default
     ha_user: ha
     ha_port: 8123
     #ha_conf_dir: /opt/home-assistant
@@ -93,8 +96,34 @@
       pip:
         name: docker
 
-    - name: ha setup
-      command: "curl -sL 'https://raw.githubusercontent.com/home-assistant/hassio-installer/master/hassio_install.sh' | bash -s -- -m qemuarm-64"
+    - name: Run Hass.io
+      docker_container:
+        name: hassio_supervisor
+        image: "homeassistant/aarch64-hassio-supervisor:{{ version }}"
+        state: started
+        privileged: "{{ privileged_mode }}"
+        restart: no
+        restart_policy: unless-stopped
+        env:
+          SUPERVISOR_SHARE: "{{ supervisor_share }}"
+          SUPERVISOR_NAME: hassio_supervisor
+          HOMEASSISTANT_REPOSITORY: homeassistant/aarch64-homeassistant
+        volumes:
+          - /etc/localtime:/etc/localtime:ro
+          - /var/run/docker.sock:/var/run/docker.sock
+          - /var/run/dbus:/var/run/dbus
+          - "{{ supervisor_share }}:/data"
+        comparisons:
+          image: ignore
+          env: strict
+          volumes: allow_more_present
+        security_opts:
+          - seccomp:unconfined
+          - apparmor:unconfined
+
+
+    #- name: ha setup
+    #  command: "curl -sL 'https://raw.githubusercontent.com/home-assistant/hassio-installer/master/hassio_install.sh' | bash -s -- -m qemuarm-64"
 
     #- name: create user
     #  user: name={{ ha_user }} comment="Home Assistant" createhome=no system=yes shell="/sbin/nologin"
