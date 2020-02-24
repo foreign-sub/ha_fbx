@@ -52,12 +52,9 @@
             "destination": "/usr/bin/init_ha.sh"
         },
         {
-            "type": "ansible-local",
-            "playbook_file": "{{ user `playbook` }}",
-            "command": "ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 INIT_PATH={{user `init_path`}} ansible-playbook",
-            "extra_arguments": [
-                "--connection=local",
-                 "--inventory={{ user `img_mount_path` }}"
+            "type": "shell-local",
+            "inline": [
+                "sudo -E ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 INIT_PATH={{user `init_path`}} ansible-playbook -i '{{ user `img_mount_path` }}', -v -c chroot {{ user `playbook` }}"
             ]
         },
         {
