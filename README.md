@@ -2,9 +2,9 @@
 
 ## Installation
 
-- Download latest release
-- Extract image to /Freebox/VMs
-- Setup VM
+* Download latest release
+* Extract image to /Freebox/VMs
+* Setup VM
 
 ## Configuration
 
