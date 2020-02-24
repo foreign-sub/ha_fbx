@@ -61,9 +61,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.UPLOAD_TOKEN }}
         with:
           tag_name: ${{ env.VERSION }}
-          release_name: Image for ${{ env.VERSION }}
+          release_name: Debian HA ${{ env.VERSION }} VM image for arm64
           body: |
+            Home Assistant ${{ env.VERSION }}
             ${{ env.LOG }}
+            Debian source image : ${{ env.B_IMG }}
             sha256 : ${{ env.SHA }}
           draft: false
           prerelease: true

@@ -6,10 +6,9 @@
     supervisor_share: "/usr/share/hassio" #Default
     privileged_mode: False #Default
     version: latest #Default
-    deb_dist: buster
+    deb_dist: "{{ lookup('env', 'DIST') | default('buster', true) }}"
     ha_user: ha
     ha_port: 8123
-    #ha_conf_dir: /opt/home-assistant
     ha_fbx:
       hostname: "{{ lookup('env', 'HOSTNAME') | default('hafbx', true) }}"
       version: "{{ lookup('env', 'VERSION') | default('master', true) }}"
@@ -49,10 +48,6 @@
       apt:
         update_cache: yes
 
-    #- name: upgrade apt distro
-    #  apt:
-    #    upgrade: dist
-
     - name: install packages
       apt:
         name: "{{ packages.apt.install }}"
@@ -62,23 +57,9 @@
       apt:
         autoclean: yes
 
-    #- name: remove dependencies that are no longer required
-    #  apt:
-    #    autoremove: yes
-
     - name: clean apt cache
       command: apt-get clean
       become: yes
-
-    - name: collect python pip package list
-      command: "pip3 list"
-      register: pip_output
-
-    - name: set python pip package facts
-      set_fact:
-        pip_packages: >
-          {{ pip_packages | default({}) | combine( { item.split()[0]: item.split()[1] } ) }}
-      with_items: "{{ pip_output.stdout_lines }}"
 
     - name: Add Docker GPG apt Key
       apt_key:
