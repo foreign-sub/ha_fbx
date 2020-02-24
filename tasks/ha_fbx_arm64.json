@@ -47,13 +47,6 @@
     ],
     "provisioners": [
         {
-            "type": "shell",
-            "inline": [
-                "sudo apt-get -y update",
-                "sudo apt-get install -y ansible"
-            ]
-        },
-        {
             "type": "file",
             "source": "{{user `init_path`}}/init.sh",
             "destination": "/usr/bin/init_ha.sh"
