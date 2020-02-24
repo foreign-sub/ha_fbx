@@ -15,7 +15,19 @@ jobs:
           export TERM=linux
           sudo apt-get update
           sudo apt-get install kpartx qemu-user-static qemu-utils
-      - name: Packer setup ${{ env.VERSION }}
+      - name: Set env
+        run: |
+          sudo apt-get install jq
+          curl https://updater.home-assistant.io/ -o /tmp/version.js
+          VERSION=$(jq .version /tmp/version.js)
+          echo "::set-env name=VERSION::${VERSION}"
+          LOG=$(jq .release-notes /tmp/version.js)
+          echo "::set-env name=LOG::${LOG}"
+          PACKER_VERSION="1.5.4"
+          echo "::set-env name=PACKER_VERSION::${PACKER_VERSION}"
+          DEB_IMG="https://cloud.debian.org/images/cloud/buster/20200210-166/debian-10-generic-arm64-20200210-166.qcow2"
+          echo "::set-env name=B_IMG::${DEB_IMG}"
+      - name: Packer ${{ env.PACKER_VERSION }} setup
         run: |
           PACKER_VERSION="1.5.4"
           curl https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip -o /tmp/packer.zip
@@ -27,13 +39,12 @@ jobs:
           sudo cp /tmp/packer-builder-arm-image/packer-builder-arm-image /usr/bin
       - name: Download image
         run: |
-          DEB_IMG="https://cloud.debian.org/images/cloud/buster/20200210-166/debian-10-generic-arm64-20200210-166.qcow2"
           #UBU_IMG="https://cloud-images.ubuntu.com/eoan/current/eoan-server-cloudimg-arm64.img"
-          curl ${DEB_IMG} -o /tmp/arm64.qcow2
+          curl ${{ env.B_IMG }} -o /tmp/arm64.qcow2
           qemu-img convert /tmp/arm64.qcow2 /home/runner/work/ha_fbx/arm64.img
           #
           #curl ${UBU_IMG} -o /home/runner/work/ha_fbx/arm64.img
-      - name: Build image ${{ env.VERSION }}
+      - name: Build image for ${{ env.VERSION }}
         run: |
           mkdir -p /tmp/mnt
           pwd
