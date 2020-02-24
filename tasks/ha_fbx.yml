@@ -66,6 +66,7 @@
     #    autoremove: yes
 
     - name: clean apt cache
+      warn: false
       command: apt-get clean
       become: yes
 
