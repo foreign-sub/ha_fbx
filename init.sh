@@ -40,7 +40,7 @@ SYSCONFDIR=${SYSCONFDIR:-/etc}
 DATA_SHARE=${DATA_SHARE:-$PREFIX/share/hassio}
 CONFIG=$SYSCONFDIR/hassio.json
 
-HOMEASSISTANT_DOCKER="$DOCKER_REPO/$MACHINE-homeassistant"
+HOMEASSISTANT_DOCKER="$DOCKER_REPO/aarch64-homeassistant"
 HASSIO_DOCKER="$DOCKER_REPO/aarch64-hassio-supervisor"
 
 ### Main

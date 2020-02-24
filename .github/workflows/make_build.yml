@@ -46,10 +46,10 @@ jobs:
       - name: Download image
         run: |
           curl ${{ env.B_IMG }} -o /tmp/arm64.qcow2
-          qemu-img convert /tmp/arm64.qcow2 /home/runner/work/ha_fbx/arm64.img
+          qemu-img convert /tmp/arm64.qcow2 $(pwd)/arm64.img
       - name: Build image for ${{ env.VERSION }}
         run: |
-          mkdir -p /tmp/mnt
+          mkdir -p mnt
           INIT_PATH=$(pwd)
           cd tasks && sudo /usr/bin/packer build -var "version=${{ env.VERSION }}" -var "init_path=${INIT_PATH}" ha_fbx_arm64.json
           sudo mv output-hafbx/image hafbx-debian-${{ env.VERSION }}.img
