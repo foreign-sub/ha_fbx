@@ -15,6 +15,7 @@
           - apparmor-utils
           - apt-transport-https
           - avahi-daemon
+          - avahi-utils
           - ca-certificates
           - curl
           - dbus
@@ -91,10 +92,6 @@
     - name: Install Docker Module for Python
       pip:
         name: docker
-
-
-    #- name: docker setup
-    #  command: "curl -fsSL get.docker.com | sh"
 
     - name: ha setup
       command: "curl -sL 'https://raw.githubusercontent.com/home-assistant/hassio-installer/master/hassio_install.sh' | bash -s -- -m qemuarm-64"
