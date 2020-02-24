@@ -112,7 +112,7 @@
     #  file: path={{ ha_conf_dir }} state=directory mode=02775 owner={{ ha_user }} group={{ ha_user }}
 
     - name: Install init script
-      file:
+      copy:
         src: "{{ha_fbx.path}}/init.sh"
         dest: "/var/lib/cloud/scripts/per-once"
         mode: u+rwx
