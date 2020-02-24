@@ -12,7 +12,6 @@
     packages:
       apt:
         install:
-          - python3-pip
           - apparmor-utils
           - apt-transport-https
           - avahi-daemon
@@ -22,6 +21,9 @@
           - jq
           - socat
           - software-properties-common
+          - python3-pip
+          - python3-setuptools
+          - virtualenv
 
   tasks:
     - name: change hostname
@@ -73,8 +75,26 @@
           {{ pip_packages | default({}) | combine( { item.split()[0]: item.split()[1] } ) }}
       with_items: "{{ pip_output.stdout_lines }}"
 
-    - name: docker setup
-      command: "curl -fsSL get.docker.com | sh"
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/debian/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/debian buster stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt: update_cache=yes name=docker-ce state=latest
+
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
+
+
+    #- name: docker setup
+    #  command: "curl -fsSL get.docker.com | sh"
 
     - name: ha setup
       command: "curl -sL 'https://raw.githubusercontent.com/home-assistant/hassio-installer/master/hassio_install.sh' | bash -s -- -m qemuarm-64"
