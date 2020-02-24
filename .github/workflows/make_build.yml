@@ -30,6 +30,9 @@ jobs:
           echo "::set-env name=VERSION::${VERSION}"
           LOG=$(jq -r '."release-notes"' /tmp/version.js)
           echo "::set-env name=LOG::${LOG}"
+          S_URL_VERSION="https://version.home-assistant.io/stable.json"
+          S_VERSION=$(curl -s ${S_URL_VERSION} | jq -e -r '.supervisor')
+          echo "::set-env name=S_VERSION::${S_VERSION}"
       - name: Packer ${{ env.PACKER_VERSION }} setup
         run: |
           PACKER_VERSION=${{ env.PACKER_VERSION }}
@@ -72,6 +75,7 @@ jobs:
             =
             Release notes : ${{ env.LOG }}
             -
+            Supervisor : ${{ env.S_VERSION }}
             Debian source image : ${{ env.B_IMG }}
             sha256 : ${{ env.SHA }}
           draft: false
