@@ -1,6 +1,5 @@
 ---
-- hosts:
-    - 127.0.0.1
+- hosts: all
   become: yes
   vars:
     supervisor_share: "/usr/share/hassio" #Default
