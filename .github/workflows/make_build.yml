@@ -17,11 +17,10 @@ jobs:
           sudo apt-get install kpartx qemu-user-static qemu-utils
       - name: Set env
         run: |
-          sudo apt-get install jq
           curl https://updater.home-assistant.io/ -o /tmp/version.js
           VERSION=$(jq .version /tmp/version.js)
           echo "::set-env name=VERSION::${VERSION}"
-          LOG=$(jq .release-notes /tmp/version.js)
+          LOG=$(jq '."release-notes"' /tmp/version.js)
           echo "::set-env name=LOG::${LOG}"
           PACKER_VERSION="1.5.4"
           echo "::set-env name=PACKER_VERSION::${PACKER_VERSION}"
