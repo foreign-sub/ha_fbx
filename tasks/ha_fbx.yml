@@ -114,7 +114,7 @@
     - name: Install init script
       copy:
         src: "{{ha_fbx.path}}/init.sh"
-        dest: "/var/lib/cloud/scripts/per-once"
+        dest: "/var/lib/cloud/scripts/per-once/init.sh"
         mode: u+rwx
 
     - name: clean apt cache
