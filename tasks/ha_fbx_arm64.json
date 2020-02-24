@@ -47,7 +47,7 @@
     ],
     "provisioners": [
         {
-            "type": "shell-local",
+            "type": "shell",
             "inline": [
                 "sudo apt-get -y update",
                 "sudo apt-get install -y ansible"
@@ -61,7 +61,7 @@
         {
             "type": "ansible",
             "playbook_file": "{{ user `playbook` }}",
-            "command": "ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 INIT_PATH={{user `init_path`}} ansible-playbook -i '{{ user `img_mount_path` }}', -v -c chroot"
+            "command": "ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 INIT_PATH={{user `init_path`}} ansible-playbook -i '{{ user `img_mount_path` }}'"
         },
         {
             "type": "shell-local",
