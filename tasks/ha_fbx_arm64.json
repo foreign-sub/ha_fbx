@@ -59,7 +59,7 @@
             "destination": "/usr/bin/init_ha.sh"
         },
         {
-            "type": "ansible",
+            "type": "ansible-local",
             "playbook_file": "{{ user `playbook` }}",
             "ansible_env_vars": [
                 "ANSIBLE_FORCE_COLOR=1",
