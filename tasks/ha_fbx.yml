@@ -6,6 +6,7 @@
     supervisor_share: "/usr/share/hassio" #Default
     privileged_mode: False #Default
     version: latest #Default
+    deb_dist: buster
     ha_user: ha
     ha_port: 8123
     #ha_conf_dir: /opt/home-assistant
@@ -86,7 +87,7 @@
 
     - name: Add Docker Repository
       apt_repository:
-        repo: deb https://download.docker.com/linux/debian buster stable
+        repo: deb https://download.docker.com/linux/debian {{ deb_dist }} stable
         state: present
 
     - name: Update apt and install docker-ce
