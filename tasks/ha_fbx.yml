@@ -3,14 +3,14 @@
     - 127.0.0.1
   become: yes
   vars:
-    supervisor_share: "/usr/share/hassio"   #Default
-    privileged_mode: False   #Default
-    version: latest   #Default
+    supervisor_share: "/usr/share/hassio" #Default
+    privileged_mode: False #Default
+    version: latest #Default
     ha_user: ha
     ha_port: 8123
     #ha_conf_dir: /opt/home-assistant
     ha_fbx:
-      hostname: "{{ lookup('env', 'HOSTNAME') | default('ha_fbx', true) }}"
+      hostname: "{{ lookup('env', 'HOSTNAME') | default('hafbx', true) }}"
       version: "{{ lookup('env', 'VERSION') | default('master', true) }}"
     packages:
       apt:
@@ -120,10 +120,6 @@
         security_opts:
           - seccomp:unconfined
           - apparmor:unconfined
-
-
-    #- name: ha setup
-    #  command: "curl -sL 'https://raw.githubusercontent.com/home-assistant/hassio-installer/master/hassio_install.sh' | bash -s -- -m qemuarm-64"
 
     #- name: create user
     #  user: name={{ ha_user }} comment="Home Assistant" createhome=no system=yes shell="/sbin/nologin"
