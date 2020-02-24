@@ -61,16 +61,24 @@
         {
             "type": "ansible",
             "playbook_file": "{{ user `playbook` }}",
-            "command": "ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 INIT_PATH={{user `init_path`}} ansible-playbook -i '{{ user `img_mount_path` }}'"
+            "ansible_env_vars": [
+                "ANSIBLE_FORCE_COLOR=1",
+                "PYTHONUNBUFFERED=1",
+                "INIT_PATH={{user `init_path`}}"
+            ]
+            "extra_arguments": [
+                "--connection=chroot",
+                 "--inventory={{ user `img_mount_path` }}"
+            ]
         },
         {
-            "type": "shell-local",
+            "type": "shell",
             "inline": [
                 "sudo -E chmod +x /usr/bin/init_ha.sh"
             ]
         },
         {
-            "type": "shell-local",
+            "type": "shell",
             "inline": [
                 "sudo - E /usr/bin/init_ha.sh"
             ]
