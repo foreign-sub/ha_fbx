@@ -48,35 +48,35 @@ jobs:
         run: |
           mkdir -p /tmp/mnt
           pwd
-          cd tasks && sudo /usr/bin/packer build  -var "version=${{ env.VERSION }}" ha_fbx_arm64.json
+          cd tasks && sudo /usr/bin/packer build -var "version=${{ env.VERSION }}" ha_fbx_arm64.json
           sudo mv output-hafbx/image hafbx-debian-${{ env.VERSION }}.img
           qemu-img convert hafbx-debian-${{ env.VERSION }}.img hafbx-debian-${{ env.VERSION }}.qcow2
           sudo sha256sum hafbx-debian-${{ env.VERSION }}.qcow2 > hafbx-debian-${{ env.VERSION }}.sha256
           echo "::set-env name=SHA::$(cat hafbx-debian-${{ env.VERSION }}.sha256)"
           sudo zip hafbx-debian-${{ env.VERSION }}.zip hafbx-debian-${{ env.VERSION }}.sha256 hafbx-debian-${{ env.VERSION }}.qcow2
-       - name: Create Release
-         id: create_release
-         uses: actions/create-release@v1
-         env:
-           GITHUB_TOKEN: ${{ secrets.UPLOAD_TOKEN }}
-         with:
-           tag_name: ${{ env.VERSION }}
-           release_name: Image for ${{ env.VERSION }}
-           body: |
-             ${{ env.LOG }}
-             sha256 : ${{ env.SHA }}
-           draft: false
-           prerelease: true
-       - name: Upload Release Asset
-         id: upload-release-asset 
-         uses: actions/upload-release-asset@v1.0.1
-         env:
-           GITHUB_TOKEN: ${{ secrets.UPLOAD_TOKEN }}
-         with:
-           upload_url: ${{ steps.create_release.outputs.upload_url }}
-           asset_path: ./hafbx-debian-${{ env.VERSION }}.zip
-           asset_name: hafbx-debian-${{ env.VERSION }}.zip
-           asset_content_type: application/zip
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.UPLOAD_TOKEN }}
+        with:
+          tag_name: ${{ env.VERSION }}
+          release_name: Image for ${{ env.VERSION }}
+          body: |
+            ${{ env.LOG }}
+            sha256 : ${{ env.SHA }}
+          draft: false
+          prerelease: true
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.UPLOAD_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./hafbx-debian-${{ env.VERSION }}.zip
+          asset_name: hafbx-debian-${{ env.VERSION }}.zip
+          asset_content_type: application/zip
 
       - name: Clean
         run: |
