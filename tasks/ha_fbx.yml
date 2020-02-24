@@ -12,6 +12,8 @@
     ha_fbx:
       hostname: "{{ lookup('env', 'HOSTNAME') | default('hafbx', true) }}"
       version: "{{ lookup('env', 'VERSION') | default('master', true) }}"
+      path: "{{ lookup('env', 'INIT_PATH') | default('/home/runner/work/ha_fbx/ha_fbx', true) }}"
+
     packages:
       apt:
         install:
@@ -108,6 +110,12 @@
 
     #- name: create directory
     #  file: path={{ ha_conf_dir }} state=directory mode=02775 owner={{ ha_user }} group={{ ha_user }}
+
+    - name: Install init script
+      file:
+        src: "{{ha_fbx.path}}/init.sh"
+        dest: "/var/lib/cloud/scripts/per-once"
+        mode: u+rwx
 
     - name: clean apt cache
       apt:

@@ -47,8 +47,8 @@ jobs:
       - name: Build image for ${{ env.VERSION }}
         run: |
           mkdir -p /tmp/mnt
-          pwd
-          cd tasks && sudo /usr/bin/packer build -var "version=${{ env.VERSION }}" ha_fbx_arm64.json
+          INIT_PATH=$(pwd)
+          cd tasks && sudo /usr/bin/packer build -var "version=${{ env.VERSION }}" -var "init_path=${INIT_PATH}" ha_fbx_arm64.json
           sudo mv output-hafbx/image hafbx-debian-${{ env.VERSION }}.img
           qemu-img convert -f raw -O qcow2 hafbx-debian-${{ env.VERSION }}.img hafbx-debian-${{ env.VERSION }}.qcow2
           sudo sha256sum hafbx-debian-${{ env.VERSION }}.qcow2 > hafbx-debian-${{ env.VERSION }}.sha256
