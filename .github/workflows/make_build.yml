@@ -17,8 +17,6 @@ jobs:
           sudo apt-get install kpartx qemu-user-static qemu-utils
       - name: Packer setup ${{ env.VERSION }}
         run: |
-          DEB_IMG="https://cloud.debian.org/images/cloud/buster/20200210-166/debian-10-generic-arm64-20200210-166.qcow2"
-          UBU_IMG="https://cloud-images.ubuntu.com/eoan/current/eoan-server-cloudimg-arm64.img"
           PACKER_VERSION="1.5.4"
           curl https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip -o /tmp/packer.zip
           unzip /tmp/packer.zip -d /tmp
@@ -27,6 +25,10 @@ jobs:
           cd /tmp/packer-builder-arm-image && git checkout testing
           cd /tmp/packer-builder-arm-image && go get -d ./... && go build
           sudo cp /tmp/packer-builder-arm-image/packer-builder-arm-image /usr/bin
+      - name: Download image
+        run: |
+          DEB_IMG="https://cloud.debian.org/images/cloud/buster/20200210-166/debian-10-generic-arm64-20200210-166.qcow2"
+          #UBU_IMG="https://cloud-images.ubuntu.com/eoan/current/eoan-server-cloudimg-arm64.img"
           curl ${DEB_IMG} -o /tmp/arm64.qcow2
           qemu-img convert /tmp/arm64.qcow2 /home/runner/work/ha_fbx/arm64.img
           #
@@ -36,6 +38,33 @@ jobs:
           mkdir -p /tmp/mnt
           pwd
           cd tasks && sudo /usr/bin/packer build ha_fbx_arm64.json
+          sudo mv output-hafbx/image hafbx-debian-$(VERSION).img
+          qemu-img convert hafbx-debian-$(VERSION).img hafbx-debian-$(VERSION).qcow2
+          sudo sha256sum hafbx-debian-$(VERSION).qcow2 > hafbx-debian-$(VERSION).sha256
+          sudo zip hafbx-debian-$(VERSION).zip hafbx-debian-$(VERSION).sha256 hafbx-debian-$(VERSION).qcow2
+      # - name: Create Release
+      #   id: create_release
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.UPLOAD_TOKEN }}
+      #   with:
+      #     tag_name: ${{ env.VERSION }}
+      #     release_name: Image for ${{ env.VERSION }}
+      #     body: |
+      #       ${{ env.LOG }}
+      #     draft: false
+      #     prerelease: true
+      # - name: Upload Release Asset
+      #   id: upload-release-asset 
+      #   uses: actions/upload-release-asset@v1.0.1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.UPLOAD_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: ./hafbx-debian-${{ env.VERSION }}.zip
+      #     asset_name: hafbx-debian-${{ env.VERSION }}.zip
+      #     asset_content_type: application/zip
+
       - name: Clean
         run: |
           echo "Build done"

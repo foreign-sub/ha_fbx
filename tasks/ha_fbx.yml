@@ -96,7 +96,7 @@
       pip:
         name: docker
 
-    - name: Run Hass.io
+    - name: Install Home assistant
       docker_container:
         name: hassio_supervisor
         image: "homeassistant/aarch64-hassio-supervisor:{{ version }}"
