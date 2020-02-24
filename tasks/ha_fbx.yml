@@ -55,9 +55,9 @@
       apt:
         autoclean: yes
 
-    - name: remove dependencies that are no longer required
-      apt:
-        autoremove: yes
+    #- name: remove dependencies that are no longer required
+    #  apt:
+    #    autoremove: yes
 
     - name: clean apt cache
       command: apt-get clean
