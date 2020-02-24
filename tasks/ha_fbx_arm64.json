@@ -67,7 +67,7 @@
                 "INIT_PATH={{user `init_path`}}"
             ],
             "extra_arguments": [
-                "--connection=chroot",
+                "--connection=local",
                  "--inventory={{ user `img_mount_path` }}"
             ]
         },
