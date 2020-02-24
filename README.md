@@ -2,7 +2,7 @@
 
 ## Installation
 
-* Download latest release
+* Download latest release from https://github.com/foreign-sub/ha_fbx/releases
 * Extract image to /Freebox/VMs
 * Setup VM
 
