@@ -52,12 +52,11 @@
             "destination": "/usr/bin/init_ha.sh"
         },
         {
-            "type": "ansible",
+            "type": "ansible-local",
             "playbook_file": "ha_fbx.yml",
             "extra_arguments": [
                 "--connection=chroot",
-                "-vvvv",
-                "-i={{ user `img_mount_path` }}"
+                "-vvvv"
             ]
         }
     ]
