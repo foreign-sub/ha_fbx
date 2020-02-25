@@ -49,7 +49,7 @@ jobs:
           qemu-img convert /tmp/arm64.qcow2 $(pwd)/arm64.img
       - name: Build image for ${{ env.VERSION }}
         run: |
-          mkdir -p mnt
+          mkdir -p /tmp/mnt
           INIT_PATH=$(pwd)
           cd tasks && sudo /usr/bin/packer build -var "version=${{ env.VERSION }}" -var "init_path=${INIT_PATH}" ha_fbx_arm64.json
           sudo mv output-hafbx/image hafbx-debian-${{ env.VERSION }}.img
