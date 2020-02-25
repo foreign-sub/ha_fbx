@@ -48,23 +48,13 @@
     "provisioners": [
         {
             "type": "file",
-            "source": "{{user `init_path`}}/init.sh",
+            "source": "{{user `init_path`}}/init_ha.sh",
             "destination": "/usr/bin/init_ha.sh"
         },
         {
-            "type": "shell",
-            "inline": [
-                "apt-get -y update",
-                "apt-get install -y ansible"
-            ]
-        },
-        {
-            "type": "ansible-local",
-            "playbook_file": "ha_fbx.yml",
-            "extra_arguments": [
-                "--connection=chroot",
-                "-vvvv"
-            ]
+            "type": "file",
+            "source": "{{user `init_path`}}/10_ha_init.cfg",
+            "destination": "/etc/cloud/cloud.cfg.d"
         }
     ]
 }

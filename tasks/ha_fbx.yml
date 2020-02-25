@@ -105,18 +105,6 @@
           - seccomp:unconfined
           - apparmor:unconfined
 
-    #- name: create user
-    #  user: name={{ ha_user }} comment="Home Assistant" createhome=no system=yes shell="/sbin/nologin"
-
-    #- name: create directory
-    #  file: path={{ ha_conf_dir }} state=directory mode=02775 owner={{ ha_user }} group={{ ha_user }}
-
-    - name: Install init script
-      copy:
-        src: "{{ha_fbx.path}}/init.sh"
-        dest: "/usr/bin/init_ha.sh"
-        mode: u+rwx
-
     - name: clean apt cache
       apt:
         autoclean: yes
