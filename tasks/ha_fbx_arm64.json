@@ -1,6 +1,6 @@
 {
     "variables": {
-        "img_mount_path": "{{user `init_path`}}/mnt",
+        "img_mount_path": "/tmp/mnt",
         "playbook": "ha_fbx.yml"
     },
     "builders": [
