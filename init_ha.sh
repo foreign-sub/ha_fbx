@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -e
 
+apt-get update
+apt-get install -y ansible
+ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook /root/ha_fbx.yml
+
 ARCH=$(uname -m)
 DOCKER_BINARY=/usr/bin/docker
 DOCKER_REPO=homeassistant

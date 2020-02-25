@@ -53,8 +53,8 @@
         },
         {
             "type": "file",
-            "source": "{{user `init_path`}}/10_ha_init.cfg",
-            "destination": "/etc/cloud/cloud.cfg.d/10_ha_init.cfg"
+            "source": "{{user `init_path`}}/tasks/ha_fbx.yml",
+            "destination": "/root/ha_fbx.yml"
         }
     ]
 }
