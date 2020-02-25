@@ -6,7 +6,7 @@
 * Extract image to /Freebox/VMs
 * Setup VM
 
-## Configuration
+## VM Configuration
 
 - Cloud-init : [x]
 - Hostname : hafbx
@@ -16,7 +16,10 @@
 system_info:
   default_user:
     name: ha
-password: password
+password: pass
 chpasswd: { expire: False }
 ssh_pwauth: True
+runcmd:
+  - [ chmod, +x, /usr/bin/init_ha.sh ]
+  - [ /usr/bin/init_ha.sh ]
 ```
