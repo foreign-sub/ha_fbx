@@ -52,6 +52,13 @@
             "destination": "/usr/bin/init_ha.sh"
         },
         {
+            "type": "shell",
+            "inline": [
+                "apt-get -y update",
+                "apt-get install -y ansible"
+            ]
+        },
+        {
             "type": "ansible-local",
             "playbook_file": "ha_fbx.yml",
             "extra_arguments": [
