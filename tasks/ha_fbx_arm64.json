@@ -56,7 +56,8 @@
             "playbook_file": "ha_fbx.yml",
             "extra_arguments": [
                 "--connection=chroot",
-                "-vvvv"
+                "-vvvv",
+                "-i={{ user `img_mount_path` }}"
             ]
         }
     ]
