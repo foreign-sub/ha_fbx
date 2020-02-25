@@ -107,3 +107,5 @@ fi
 # Init system
 echo "[Info] Run Hass.io"
 systemctl start hassio-supervisor.service
+
+exit 0
