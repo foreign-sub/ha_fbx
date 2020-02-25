@@ -80,30 +80,30 @@
       pip:
         name: docker
 
-    - name: Install Home assistant
-      docker_container:
-        name: hassio_supervisor
-        image: "homeassistant/aarch64-hassio-supervisor:{{ version }}"
-        state: started
-        privileged: "{{ privileged_mode }}"
-        restart: no
-        restart_policy: unless-stopped
-        env:
-          SUPERVISOR_SHARE: "{{ supervisor_share }}"
-          SUPERVISOR_NAME: hassio_supervisor
-          HOMEASSISTANT_REPOSITORY: homeassistant/aarch64-homeassistant
-        volumes:
-          - /etc/localtime:/etc/localtime:ro
-          - /var/run/docker.sock:/var/run/docker.sock
-          - /var/run/dbus:/var/run/dbus
-          - "{{ supervisor_share }}:/data"
-        comparisons:
-          image: ignore
-          env: strict
-          volumes: allow_more_present
-        security_opts:
-          - seccomp:unconfined
-          - apparmor:unconfined
+    # - name: Install Home assistant
+    #   docker_container:
+    #     name: hassio_supervisor
+    #     image: "homeassistant/aarch64-hassio-supervisor:{{ version }}"
+    #     state: started
+    #     privileged: "{{ privileged_mode }}"
+    #     restart: no
+    #     restart_policy: unless-stopped
+    #     env:
+    #       SUPERVISOR_SHARE: "{{ supervisor_share }}"
+    #       SUPERVISOR_NAME: hassio_supervisor
+    #       HOMEASSISTANT_REPOSITORY: homeassistant/aarch64-homeassistant
+    #     volumes:
+    #       - /etc/localtime:/etc/localtime:ro
+    #       - /var/run/docker.sock:/var/run/docker.sock
+    #       - /var/run/dbus:/var/run/dbus
+    #       - "{{ supervisor_share }}:/data"
+    #     comparisons:
+    #       image: ignore
+    #       env: strict
+    #       volumes: allow_more_present
+    #     security_opts:
+    #       - seccomp:unconfined
+    #       - apparmor:unconfined
 
     - name: clean apt cache
       apt:
