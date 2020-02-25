@@ -52,9 +52,11 @@
             "destination": "/usr/bin/init_ha.sh"
         },
         {
-            "type": "shell-local",
-            "inline": [
-                "sudo -E ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 INIT_PATH={{user `init_path`}} ansible-playbook -i '{{ user `img_mount_path` }}' -vvvv -c chroot {{ user `playbook` }}"
+            "type": "ansible",
+            "playbook_file": "ha_fbx.yml",
+            "extra_arguments": [
+                "--connection=chroot",
+                "-vvvv"
             ]
         }
     ]
