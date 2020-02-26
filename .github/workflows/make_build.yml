@@ -62,7 +62,7 @@ jobs:
           sudo virt-filesystems --long -h --all -a hafbx-debian-${{ env.VERSION }}.qcow2
           sudo sha256sum hafbx-debian-${{ env.VERSION }}.qcow2 > hafbx-debian-${{ env.VERSION }}.sha256
           echo "::set-env name=SHA::$(cat hafbx-debian-${{ env.VERSION }}.sha256)"
-          sudo zip ../hafbx-debian-${{ env.VERSION }}.zip hafbx-debian-${{ env.VERSION }}.sha256 hafbx-debian-${{ env.VERSION }}.qcow2
+          sudo zip hafbx-debian-${{ env.VERSION }}.zip hafbx-debian-${{ env.VERSION }}.sha256 hafbx-debian-${{ env.VERSION }}.qcow2
       - name: Clean
         run: |
           echo "Build done"
