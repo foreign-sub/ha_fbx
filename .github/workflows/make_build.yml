@@ -56,10 +56,7 @@ jobs:
       - name: Resize and pack image for ${{ env.VERSION }}
         run: |
           sudo virt-filesystems --long -h --all -a image
-          #truncate -r image out.img
-          #truncate -s +10G out.img
-          sudo qemu-img resize image +10G
-          #sudo virt-resize --expand /dev/sda1 image out.img
+          sudo qemu-img resize image +14G
           sudo virt-sparsify image --convert qcow2 hafbx-debian-${{ env.VERSION }}.qcow2
           sudo virt-filesystems --long -h --all -a hafbx-debian-${{ env.VERSION }}.qcow2
           sudo sha256sum hafbx-debian-${{ env.VERSION }}.qcow2 > hafbx-debian-${{ env.VERSION }}.sha256

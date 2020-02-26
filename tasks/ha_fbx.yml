@@ -25,6 +25,7 @@
           - curl
           - dbus
           - jq
+          - network-manager
           - socat
           - software-properties-common
           - python3-pip
@@ -104,6 +105,14 @@
     #     security_opts:
     #       - seccomp:unconfined
     #       - apparmor:unconfined
+
+    - name: disable modem manager
+      command: systemctl disable ModemManager
+      become: yes
+
+    - name: purge modem manager
+      command: apt-get purge modemmanager
+      become: yes
 
     - name: clean apt cache
       apt:
