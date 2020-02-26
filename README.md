@@ -21,6 +21,6 @@ password: pass
 chpasswd: { expire: False }
 ssh_pwauth: True
 runcmd:
-  - [ chmod, +x, /usr/bin/init_ha.sh ]
-  - [ /usr/bin/init_ha.sh ]
+  - [ chmod, +x, /root/init_ha.sh ]
+  - [ /root/init_ha.sh ]
 ```
