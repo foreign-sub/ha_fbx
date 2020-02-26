@@ -57,8 +57,9 @@ jobs:
         run: |
           sudo virt-filesystems --long -h --all -a image
           truncate -r image out.img
-          truncate -s +10G out.img
-          sudo virt-resize --expand /dev/sda1 image out.img
+          #truncate -s +10G out.img
+          sudo qemu-img resize out.img +10G
+          #sudo virt-resize --expand /dev/sda1 image out.img
           sudo virt-sparsify out.img --convert qcow2 hafbx-debian-${{ env.VERSION }}.qcow2
           sudo virt-filesystems --long -h --all -a hafbx-debian-${{ env.VERSION }}.qcow2
           sudo sha256sum hafbx-debian-${{ env.VERSION }}.qcow2 > hafbx-debian-${{ env.VERSION }}.sha256
