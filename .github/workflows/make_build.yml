@@ -17,7 +17,7 @@ jobs:
         run: |
           export TERM=linux
           sudo apt-get update
-          sudo apt-get install kpartx qemu-user-static qemu-utils
+          sudo apt-get install kpartx qemu-user-static qemu-utils libguestfs-tools
       - name: Set env
         run: |
           PACKER_VERSION="1.5.4"
@@ -53,7 +53,13 @@ jobs:
           INIT_PATH=$(pwd)
           cd tasks && sudo /usr/bin/packer build -var "version=${{ env.VERSION }}" -var "init_path=${INIT_PATH}" ha_fbx_arm64.json
           sudo mv output-hafbx/image hafbx-debian-${{ env.VERSION }}.img
-          qemu-img convert -f raw -O qcow2 hafbx-debian-${{ env.VERSION }}.img hafbx-debian-${{ env.VERSION }}.qcow2
+          qemu-img convert -f raw -O qcow2 hafbx-debian-${{ env.VERSION }}.img hafbx-debian-o.qcow2
+      - name: Resize and pack image for ${{ env.VERSION }}
+        run: |
+          sudo virt-filesystems --long -h --all -a hafbx-debian-o.qcow2
+          qemu-img create -f qcow2 -o preallocation=metadata hafbx-debian-${{ env.VERSION }}.qcow2 20G
+          virt-resize --expand /dev/sda1 hafbx-debian-o.qcow2 hafbx-debian-${{ env.VERSION }}.qcow2
+          sudo virt-filesystems --long -h --all -a hafbx-debian-${{ env.VERSION }}.qcow2
           sudo sha256sum hafbx-debian-${{ env.VERSION }}.qcow2 > hafbx-debian-${{ env.VERSION }}.sha256
           echo "::set-env name=SHA::$(cat hafbx-debian-${{ env.VERSION }}.sha256)"
           sudo zip ../hafbx-debian-${{ env.VERSION }}.zip hafbx-debian-${{ env.VERSION }}.sha256 hafbx-debian-${{ env.VERSION }}.qcow2
