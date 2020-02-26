@@ -111,7 +111,7 @@
       become: yes
 
     - name: purge modem manager
-      command: apt-get purge modemmanager
+      command: apt-get purge -y modemmanager
       become: yes
 
     - name: clean apt cache
