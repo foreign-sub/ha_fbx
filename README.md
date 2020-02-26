@@ -3,9 +3,10 @@
 ## Installation
 
 * Download latest release from https://github.com/foreign-sub/ha_fbx/releases
-* Extract image to /Freebox/VMs
+* Extract hafbx-debian-(version).zip to /Freebox/VMs
 * Setup VM
 * Launch VM and wait for setup to complete
+* http://hafbx.local:8123/
 
 ## VM Configuration
 
