@@ -58,7 +58,7 @@ jobs:
         run: |
           sudo virt-filesystems --long -h --all -a hafbx-debian-o.qcow2
           qemu-img create -f qcow2 -o preallocation=metadata hafbx-debian-${{ env.VERSION }}.qcow2 20G
-          virt-resize --expand /dev/sda1 hafbx-debian-o.qcow2 hafbx-debian-${{ env.VERSION }}.qcow2
+          sudo virt-resize --expand /dev/sda1 hafbx-debian-o.qcow2 hafbx-debian-${{ env.VERSION }}.qcow2
           sudo virt-filesystems --long -h --all -a hafbx-debian-${{ env.VERSION }}.qcow2
           sudo sha256sum hafbx-debian-${{ env.VERSION }}.qcow2 > hafbx-debian-${{ env.VERSION }}.sha256
           echo "::set-env name=SHA::$(cat hafbx-debian-${{ env.VERSION }}.sha256)"
