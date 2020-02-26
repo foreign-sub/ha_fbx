@@ -52,13 +52,14 @@ jobs:
           mkdir -p /tmp/mnt
           INIT_PATH=$(pwd)
           cd tasks && sudo /usr/bin/packer build -var "version=${{ env.VERSION }}" -var "init_path=${INIT_PATH}" ha_fbx_arm64.json
-          sudo mv output-hafbx/image hafbx-debian-${{ env.VERSION }}.img
-          qemu-img convert -f raw -O qcow2 hafbx-debian-${{ env.VERSION }}.img ../hafbx-debian-o.qcow2
+          sudo mv output-hafbx/image ../hafbx-debian-${{ env.VERSION }}.img
       - name: Resize and pack image for ${{ env.VERSION }}
         run: |
-          sudo virt-filesystems --long -h --all -a hafbx-debian-o.qcow2
-          qemu-img create -f qcow2 -o preallocation=metadata hafbx-debian-${{ env.VERSION }}.qcow2 20G
-          sudo virt-resize --expand /dev/sda1 hafbx-debian-o.qcow2 hafbx-debian-${{ env.VERSION }}.qcow2
+          sudo virt-filesystems --long -h --all -a hafbx-debian-o.img
+          truncate -r hafbx-debian-o.img hafbx-debian-${{ env.VERSION }}.img
+          truncate -s +10G hafbx-debian-${{ env.VERSION }}.img
+          sudo virt-resize --expand /dev/sda1 hafbx-debian-o.img hafbx-debian-${{ env.VERSION }}.img
+          sudo virt-sparsify hafbx-debian-${{ env.VERSION }}.img --convert qcow2 hafbx-debian-${{ env.VERSION }}.qcow2
           sudo virt-filesystems --long -h --all -a hafbx-debian-${{ env.VERSION }}.qcow2
           sudo sha256sum hafbx-debian-${{ env.VERSION }}.qcow2 > hafbx-debian-${{ env.VERSION }}.sha256
           echo "::set-env name=SHA::$(cat hafbx-debian-${{ env.VERSION }}.sha256)"
