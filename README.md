@@ -18,7 +18,7 @@
 system_info:
   default_user:
     name: ha
-password: pass
+password: password
 chpasswd: { expire: False }
 ssh_pwauth: True
 runcmd:
