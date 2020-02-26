@@ -1,0 +1,99 @@
+name: Build image
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '* * */21 * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install required packages
+        run: |
+          export TERM=linux
+          sudo apt-get update
+          sudo apt-get install kpartx qemu-user-static qemu-utils libguestfs-tools
+      - name: Set env
+        run: |
+          PACKER_VERSION="1.5.4"
+          echo "::set-env name=PACKER_VERSION::${PACKER_VERSION}"
+          DEB_IMG="https://cloud.debian.org/images/cloud/buster/20200210-166/debian-10-generic-arm64-20200210-166.qcow2"
+          #UBU_IMG="https://cloud-images.ubuntu.com/eoan/current/eoan-server-cloudimg-arm64.img"
+          echo "::set-env name=B_IMG::${DEB_IMG}"
+          curl https://updater.home-assistant.io/ -o /tmp/version.js
+          VERSION=$(jq -r .version /tmp/version.js)
+          echo "::set-env name=VERSION::${VERSION}"
+          LOG=$(jq -r '."release-notes"' /tmp/version.js)
+          echo "::set-env name=LOG::${LOG}"
+          S_URL_VERSION="https://version.home-assistant.io/stable.json"
+          S_VERSION=$(curl -s ${S_URL_VERSION} | jq -e -r '.supervisor')
+          echo "::set-env name=S_VERSION::${S_VERSION}"
+      - name: Packer ${{ env.PACKER_VERSION }} setup
+        run: |
+          PACKER_VERSION=${{ env.PACKER_VERSION }}
+          curl https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip -o /tmp/packer.zip
+          unzip /tmp/packer.zip -d /tmp
+          sudo mv /tmp/packer /usr/bin/packer
+          git clone https://github.com/foreign-sub/packer-builder-arm-image.git /tmp/packer-builder-arm-image
+          cd /tmp/packer-builder-arm-image && git checkout testing
+          cd /tmp/packer-builder-arm-image && go get -d ./... && go build
+          sudo cp /tmp/packer-builder-arm-image/packer-builder-arm-image /usr/bin
+      - name: Download image
+        run: |
+          curl ${{ env.B_IMG }} -o /tmp/arm64.qcow2
+          qemu-img convert /tmp/arm64.qcow2 $(pwd)/arm64.img
+      - name: Build image for ${{ env.VERSION }}
+        run: |
+          mkdir -p /tmp/mnt
+          INIT_PATH=$(pwd)
+          cd tasks && sudo /usr/bin/packer build -var "version=${{ env.VERSION }}" -var "init_path=${INIT_PATH}" ha_fbx_arm64.json
+          sudo mv output-hafbx/image ../
+          rm ../arm64.img
+      - name: Resize and pack image for ${{ env.VERSION }}
+        run: |
+          sudo virt-filesystems --long -h --all -a image
+          mv image /tmp/image
+          sudo qemu-img resize /tmp/image +12G
+          sudo virt-sparsify /tmp/image --convert qcow2 hafbx-debian-${{ env.VERSION }}.qcow2
+          sudo virt-filesystems --long -h --all -a hafbx-debian-${{ env.VERSION }}.qcow2
+          sudo sha256sum hafbx-debian-${{ env.VERSION }}.qcow2 > hafbx-debian-${{ env.VERSION }}.sha256
+          echo "::set-env name=SHA::$(cat hafbx-debian-${{ env.VERSION }}.sha256)"
+          sudo zip hafbx-debian-${{ env.VERSION }}.zip hafbx-debian-${{ env.VERSION }}.sha256 hafbx-debian-${{ env.VERSION }}.qcow2
+      - name: Clean
+        run: |
+          echo "Build done"
+          pwd
+          ls -lastr
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.UPLOAD_TOKEN }}
+        with:
+          tag_name: ${{ env.VERSION }}
+          release_name: Debian HA ${{ env.VERSION }} VM image for arm64
+          body: |
+            Home Assistant ${{ env.VERSION }}
+            =
+            Release notes : ${{ env.LOG }}
+            -
+            Supervisor : ${{ env.S_VERSION }}
+            Debian source image : ${{ env.B_IMG }}
+            sha256 : ${{ env.SHA }}
+          draft: false
+          prerelease: true
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.UPLOAD_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./hafbx-debian-${{ env.VERSION }}.zip
+          asset_name: hafbx-debian-${{ env.VERSION }}.zip
+          asset_content_type: application/zip
