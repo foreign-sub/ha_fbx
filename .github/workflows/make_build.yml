@@ -61,8 +61,10 @@ jobs:
         run: |
           sudo virt-filesystems --long -h --all -a image
           mv image /tmp/image
-          sudo qemu-img resize /tmp/image +12G
           sudo virt-sparsify /tmp/image --convert qcow2 hafbx-debian-${{ env.VERSION }}.qcow2
+          sudo qemu-img resize hafbx-debian-${{ env.VERSION }}.qcow2 +14G
+          sudo qemu-img info hafbx-debian-${{ env.VERSION }}.qcow2 > hafbx-debian-${{ env.VERSION }}.imginfo
+          echo "::set-env name=IMG_INFO::$(cat hafbx-debian-${{ env.VERSION }}.imginfo)"
           sudo virt-filesystems --long -h --all -a hafbx-debian-${{ env.VERSION }}.qcow2
           sudo sha256sum hafbx-debian-${{ env.VERSION }}.qcow2 > hafbx-debian-${{ env.VERSION }}.sha256
           echo "::set-env name=SHA::$(cat hafbx-debian-${{ env.VERSION }}.sha256)"
@@ -88,8 +90,9 @@ jobs:
             Supervisor : ${{ env.S_VERSION }}
             Debian source image : ${{ env.B_IMG }}
             sha256 : ${{ env.SHA }}
+            Image info: ${{ env.IMG_INFO }}
           draft: false
-          prerelease: true
+          prerelease: false
       - name: Upload Release Asset
         id: upload-release-asset
         uses: actions/upload-release-asset@v1.0.1
