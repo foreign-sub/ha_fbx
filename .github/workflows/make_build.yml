@@ -6,7 +6,7 @@ on:
       - master
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '14 3 */16 * *'
+    - cron: "14 3 */16 * *"
 
 jobs:
   build:
@@ -22,7 +22,10 @@ jobs:
         run: |
           PACKER_VERSION="1.5.4"
           echo "::set-env name=PACKER_VERSION::${PACKER_VERSION}"
-          DEB_IMG="https://cloud.debian.org/images/cloud/buster/20200210-166/debian-10-generic-arm64-20200210-166.qcow2"
+          ARCH="arm64"
+          RELEASE="buster"
+          R_NUM="20200303-188"
+          DEB_IMG="http://cdimage.debian.org/images/cloud/${RELEASE}/daily/${R_NUM}/debian-10-generic-${ARCH}-daily-${R_NUM}.qcow2"
           #UBU_IMG="https://cloud-images.ubuntu.com/eoan/current/eoan-server-cloudimg-arm64.img"
           echo "::set-env name=B_IMG::${DEB_IMG}"
           curl https://updater.home-assistant.io/ -o /tmp/version.js
@@ -88,7 +91,7 @@ jobs:
           draft: false
           prerelease: true
       - name: Upload Release Asset
-        id: upload-release-asset 
+        id: upload-release-asset
         uses: actions/upload-release-asset@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.UPLOAD_TOKEN }}
