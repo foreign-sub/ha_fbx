@@ -64,7 +64,7 @@ jobs:
           sudo virt-sparsify /tmp/image --convert qcow2 hafbx-debian-${{ env.VERSION }}.qcow2
           sudo qemu-img resize hafbx-debian-${{ env.VERSION }}.qcow2 +14G
           sudo qemu-img info hafbx-debian-${{ env.VERSION }}.qcow2 > hafbx-debian-${{ env.VERSION }}.imginfo
-          echo "::set-env name=IMG_INFO::$(cat hafbx-debian-${{ env.VERSION }}.imginfo)"
+          echo "::set-env name=IMG_INFO::$(cat hafbx-debian-${{ env.VERSION }}.imginfo | tr '\n' ' ')"
           sudo virt-filesystems --long -h --all -a hafbx-debian-${{ env.VERSION }}.qcow2
           sudo sha256sum hafbx-debian-${{ env.VERSION }}.qcow2 > hafbx-debian-${{ env.VERSION }}.sha256
           echo "::set-env name=SHA::$(cat hafbx-debian-${{ env.VERSION }}.sha256)"
@@ -76,7 +76,7 @@ jobs:
           ls -lastr
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: actions/create-release@latest
         env:
           GITHUB_TOKEN: ${{ secrets.UPLOAD_TOKEN }}
         with:
@@ -91,6 +91,7 @@ jobs:
             Debian source image : ${{ env.B_IMG }}
             sha256 : ${{ env.SHA }}
             Image info: ${{ env.IMG_INFO }}
+
           draft: false
           prerelease: false
       - name: Upload Release Asset
