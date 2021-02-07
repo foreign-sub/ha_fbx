@@ -20,7 +20,7 @@ jobs:
           sudo apt-get install kpartx qemu-user-static qemu-utils libguestfs-tools
       - name: Set env
         run: |
-          PACKER_VERSION="1.5.4"
+          PACKER_VERSION="1.6.6"
           echo "PACKER_VERSION=${PACKER_VERSION}" >> $GITHUB_ENV
           ARCH="arm64"
           RELEASE="buster"
