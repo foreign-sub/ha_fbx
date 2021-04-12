@@ -51,7 +51,7 @@ jobs:
           sudo cp /tmp/packer-builder-arm-image/packer-builder-arm-image /usr/bin
       - name: Download image
         run: |
-          curl ${{ env.B_IMG }} -o /tmp/arm64.qcow2
+          curl -L ${{ env.B_IMG }} -o /tmp/arm64.qcow2
           qemu-img convert /tmp/arm64.qcow2 ${{ env.ARM_IMG }}
       - name: Build image for ${{ env.VERSION }}
         run: |
