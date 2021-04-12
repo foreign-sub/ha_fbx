@@ -42,6 +42,7 @@
             "iso_url": "{{user `is_url`}}",
             "iso_checksum": "none",
             "mount_path": "{{ user `img_mount_path` }}",
+            "image_chroot_env": ["PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"],
             "qemu_binary": "qemu-aarch64-static"
         }
     ],
@@ -55,6 +56,10 @@
             "type": "file",
             "source": "{{user `init_path`}}/tasks/ha_fbx.yml",
             "destination": "/root/ha_fbx.yml"
+        },
+        {
+            "type": "ansible",
+            "playbook_file": "{{ user `playbook` }}"
         }
     ]
 }
