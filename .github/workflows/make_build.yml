@@ -56,7 +56,7 @@ jobs:
       - name: Build image for ${{ env.VERSION }}
         run: |
           INIT_PATH=$(pwd)
-          mkdir -p /tmp/mnt
+          mkdir -p /run/mnt
           cd tasks && sudo /usr/bin/packer build -var "is_url=${{ env.ARM_IMG }}" -var "version=${{ env.VERSION }}" -var "init_path=${INIT_PATH}" ha_fbx_arm64.json
           sudo mv output-hafbx/image ${INIT_PATH}
           rm ${{ env.ARM_IMG }}
