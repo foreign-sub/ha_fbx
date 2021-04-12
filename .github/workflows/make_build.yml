@@ -22,6 +22,8 @@ jobs:
         run: |
           PACKER_VERSION="1.7.2"
           echo "PACKER_VERSION=${PACKER_VERSION}" >> $GITHUB_ENV
+          ARM_IMG="/tmp/arm64.img"
+          echo "ARM_IMG=${ARM_IMG}" >> $GITHUB_ENV
           ARCH="arm64"
           FLAVOR="generic"
           RELEASE="buster"
@@ -50,14 +52,14 @@ jobs:
       - name: Download image
         run: |
           curl ${{ env.B_IMG }} -o /tmp/arm64.qcow2
-          qemu-img convert /tmp/arm64.qcow2 /tmp/arm64.img
+          qemu-img convert /tmp/arm64.qcow2 ${{ env.ARM_IMG }}
       - name: Build image for ${{ env.VERSION }}
         run: |
           INIT_PATH=$(pwd)
           mkdir -p /tmp/mnt
-          cd tasks && sudo /usr/bin/packer build -var "is_url=${{ env.B_IMG }}" -var "version=${{ env.VERSION }}" -var "init_path=${INIT_PATH}" ha_fbx_arm64.json
-          sudo mv output-hafbx/image ../
-          rm ../arm64.img
+          cd tasks && sudo /usr/bin/packer build -var "is_url=${{ env.ARM_IMG }}" -var "version=${{ env.VERSION }}" -var "init_path=${INIT_PATH}" ha_fbx_arm64.json
+          sudo mv output-hafbx/image ${INIT_PATH}
+          rm ${{ env.ARM_IMG }}
       - name: Resize and pack image for ${{ env.VERSION }}
         run: |
           sudo virt-filesystems --long -h --all -a image
