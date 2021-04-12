@@ -1,6 +1,6 @@
 {
     "variables": {
-        "img_mount_path": "/run/mnt",
+        "img_mount_path": "/tmp/mnt",
         "playbook": "ha_fbx.yml"
     },
     "builders": [
@@ -57,8 +57,11 @@
             "destination": "/root/ha_fbx.yml"
         },
         {
-            "type": "ansible",
-            "playbook_file": "{{user `init_path`}}/tasks/ha_fbx.yml"
+            "type": "shell",
+            "inline": [
+                "sudo apt-get update",
+                "sudo apt-get install -y apparmor-utils apt-transport-https avahi-daemon avahi-utils ca-certificates curl dbus jq network-manager socat software-properties-common python3-pip python3-setuptools virtualenv"
+            ]
         }
     ]
 }
