@@ -50,12 +50,12 @@ jobs:
       - name: Download image
         run: |
           curl ${{ env.B_IMG }} -o /tmp/arm64.qcow2
-          qemu-img convert /tmp/arm64.qcow2 $(pwd)/arm64.img
+          qemu-img convert /tmp/arm64.qcow2 /tmp/arm64.img
       - name: Build image for ${{ env.VERSION }}
         run: |
-          mkdir -p /tmp/mnt
           INIT_PATH=$(pwd)
-          cd tasks && sudo /usr/bin/packer build -var "version=${{ env.VERSION }}" -var "init_path=${INIT_PATH}" ha_fbx_arm64.json
+          mkdir -p /tmp/mnt
+          cd tasks && sudo /usr/bin/packer build -var "is_url=${{ env.B_IMG }}" -var "version=${{ env.VERSION }}" -var "init_path=${INIT_PATH}" ha_fbx_arm64.json
           sudo mv output-hafbx/image ../
           rm ../arm64.img
       - name: Resize and pack image for ${{ env.VERSION }}

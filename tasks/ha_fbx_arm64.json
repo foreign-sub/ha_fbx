@@ -1,6 +1,6 @@
 {
     "variables": {
-        "img_mount_path": "/run/mnt",
+        "img_mount_path": "/tmp/mnt",
         "playbook": "ha_fbx.yml"
     },
     "builders": [
@@ -39,7 +39,7 @@
                 "/",
                 "/boot/efi"
             ],
-            "iso_url": "{{user `init_path`}}/arm64.img",
+            "iso_url": "{{user `is_url`}}",
             "iso_checksum": "none",
             "mount_path": "{{ user `img_mount_path` }}",
             "qemu_binary": "qemu-aarch64-static"
