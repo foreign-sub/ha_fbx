@@ -17,7 +17,7 @@ jobs:
         run: |
           export TERM=linux
           sudo apt-get update
-          sudo apt-get install kpartx qemu-user-static qemu-utils libguestfs-tools
+          sudo apt-get install kpartx qemu-user-static qemu-utils libguestfs-tools ansible
       - name: Set env
         run: |
           PACKER_VERSION="1.7.2"
