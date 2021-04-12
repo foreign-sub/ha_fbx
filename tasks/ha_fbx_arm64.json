@@ -61,7 +61,6 @@
             "inline": [
                 "lsb_release -a",
                 "sleep 15s",
-                "cat /etc/resolv.conf",
                 "ping -c 1 archive.ubuntu.com",
                 "sudo apt-get update",
                 "sudo apt-get install -y apparmor-utils apt-transport-https avahi-daemon avahi-utils ca-certificates curl dbus jq network-manager socat software-properties-common python3-pip python3-setuptools virtualenv"
