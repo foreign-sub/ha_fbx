@@ -20,12 +20,13 @@ jobs:
           sudo apt-get install kpartx qemu-user-static qemu-utils libguestfs-tools
       - name: Set env
         run: |
-          PACKER_VERSION="1.6.6"
+          PACKER_VERSION="1.7.2"
           echo "PACKER_VERSION=${PACKER_VERSION}" >> $GITHUB_ENV
           ARCH="arm64"
+          FLAVOR="generic"
           RELEASE="buster"
-          R_NUM="20210201-535"
-          DEB_IMG="http://cdimage.debian.org/images/cloud/${RELEASE}/daily/${R_NUM}/debian-10-generic-${ARCH}-daily-${R_NUM}.qcow2"
+          REL_DATE="20210329-591"
+          DEB_IMG="http://cdimage.debian.org/images/cloud/${RELEASE}/daily/${REL_DATE}/debian-10-${FLAVOR}-${ARCH}-daily-${REL_DATE}.qcow2"
           #UBU_IMG="https://cloud-images.ubuntu.com/eoan/current/eoan-server-cloudimg-arm64.img"
           echo "B_IMG=${DEB_IMG}" >> $GITHUB_ENV
           curl https://updater.home-assistant.io/ -o /tmp/version.js
