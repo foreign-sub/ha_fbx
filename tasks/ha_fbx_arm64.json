@@ -58,7 +58,7 @@
         },
         {
             "type": "ansible",
-            "playbook_file": "{{ user `playbook` }}"
+            "playbook_file": "{{user `init_path`}}/tasks/ha_fbx.yml"
         }
     ]
 }
