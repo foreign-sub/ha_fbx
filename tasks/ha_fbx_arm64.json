@@ -55,6 +55,12 @@
             "type": "file",
             "source": "{{user `init_path`}}/tasks/ha_fbx.yml",
             "destination": "/root/ha_fbx.yml"
+        },
+        {
+            "type": "shell",
+            "inline": [
+                "chmod +x /root/init_ha.sh"
+            ]
         }
     ]
 }
