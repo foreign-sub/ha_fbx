@@ -29,7 +29,7 @@
 Startup finished in 4.388s (kernel) + 19min 19.850s (userspace) = 19min 24.239s.
 ```
 * Open http://hafbx.local:8123/
-* You can also use SSH to access your VM using the username and password you've define in the #cloud-config below, by default :
+* You can also use SSH to access your VM using the username and password you've defined in the #cloud-config below, by default :
 ```
 ssh ha@hafbx.local
 ```
@@ -61,9 +61,9 @@ runcmd:
 ```
   - [ /root/init_ha.sh, --with-hacs ]
 ```
-* Setup will be a bit longer but because of onboarding HA may appear to be ready while the init proccess is still ongoing.
+* Setup will be a bit longer but because of onboarding HA may appear to be ready while the init process is still ongoing.
 ```
- Startup finished in 2.101s (kernel) + 32min 39.264s (userspace) = 32min 41.365s.
+Startup finished in 4.697s (kernel) + 31min 46.696s (userspace) = 31min 51.394s.
 ```
 * Once initial setup is complete, restart Home Assistant at least once, then you can finish HACS setup through the integrations panel.
 * Please note that HACS addons also requires home assistant to restart or at least a browser refresh.
