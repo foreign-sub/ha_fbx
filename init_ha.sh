@@ -174,3 +174,26 @@ systemctl start hassio-supervisor.service
 info "Installing the 'ha' cli"
 curl -sL ${URL_HA} > "${PREFIX}/bin/ha"
 chmod a+x "${PREFIX}/bin/ha"
+
+# Parse command line parameters
+while [[ $# -gt 0 ]]; do
+    arg="$1"
+
+    case $arg in
+        -wh|--with-hacs)
+            info "Installing 'hacs' requirements"
+            apt install -y unzip
+            info "Waiting for 'ha' setup"
+            timeout 1200 bash -c 'until echo > /dev/tcp/localhost/8123; do sleep 60; done'
+            sleep 480
+            info "Installing 'hacs'"
+            cd /usr/share/hassio/homeassistant/
+            wget -q -O - https://install.hacs.xyz | bash -
+            shift
+            ;;
+        *)
+            error "Unknown option $1"
+            ;;
+    esac
+    shift
+done
