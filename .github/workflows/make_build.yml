@@ -31,8 +31,8 @@ jobs:
           DEB_IMG="http://cdimage.debian.org/images/cloud/${RELEASE}/daily/${REL_DATE}/debian-10-${FLAVOR}-${ARCH}-daily-${REL_DATE}.qcow2"
           #UBU_IMG="https://cloud-images.ubuntu.com/eoan/current/eoan-server-cloudimg-arm64.img"
           echo "B_IMG=${DEB_IMG}" >> $GITHUB_ENV
-          curl https://updater.home-assistant.io/ -o /tmp/version.js
-          VERSION=$(jq -r .version /tmp/version.js)
+          curl https://www.home-assistant.io/version.json  -o /tmp/version.js
+          VERSION=$(jq -r .current_version /tmp/version.js)
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
           LOG=$(jq -r '."release-notes"' /tmp/version.js)
           echo "LOG=${LOG}" >> $GITHUB_ENV
