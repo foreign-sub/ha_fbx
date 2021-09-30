@@ -47,6 +47,12 @@
         state: present
       when: hostname.changed
 
+    - name: tweak user groups
+      user:
+        name: {{ha_user}}
+        groups: bluetooth
+        append: yes
+
     - name: update apt package cache
       apt:
         update_cache: yes
