@@ -6,6 +6,7 @@
     supervisor_share: "/usr/share/hassio" #Default
     privileged_mode: False #Default
     version: latest #Default
+    os_agent_version: 1.2.1
     deb_dist: "{{ lookup('env', 'DIST') | default('bullseye', true) }}"
     ha_user: ha
     ha_port: 8123
@@ -127,6 +128,10 @@
     - name: remove dependencies that are no longer required
       apt:
         autoremove: yes
+
+    - name: Install os-agent
+      apt:
+        deb: https://github.com/home-assistant/os-agent/releases/download/{{ os_agent_version }}/os-agent_{{ os_agent_version }}_linux_aarch64.deb
 
   handlers:
     - name: reload systemd services
