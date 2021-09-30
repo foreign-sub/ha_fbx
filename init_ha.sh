@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
+export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get install -y ansible
 ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook /root/ha_fbx.yml
