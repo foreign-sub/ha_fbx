@@ -183,8 +183,11 @@ while [[ $# -gt 0 ]]; do
         -wh|--with-hacs)
             info "Installing 'hacs' requirements"
             apt install -y unzip
-            info "Waiting for 'ha' setup"
-            timeout 1200 bash -c 'until echo > /dev/tcp/localhost/8123; do sleep 60; done'
+            info "Waiting 3 mins"
+            sleep 180
+            info "Checking 'ha' setup progress"
+            timeout 1200 bash -c '{ until exec 3<>/dev/tcp/localhost/8123; do sleep 60; done } > /dev/null 2>&1 || [ "$?" = 1 ]'
+            info "Waiting 6 mins"
             sleep 480
             info "Installing 'hacs'"
             cd /usr/share/hassio/homeassistant/
