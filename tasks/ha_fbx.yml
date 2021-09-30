@@ -48,6 +48,11 @@
         state: present
       when: hostname.changed
 
+    - name: add bluetooth group
+      group:
+        name: bluetooth
+        state: present
+
     - name: tweak user groups
       user:
         name: "{{ ha_user }}"
