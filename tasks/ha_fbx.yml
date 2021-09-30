@@ -50,7 +50,7 @@
 
     - name: tweak user groups
       user:
-        name: {{ha_user}}
+        name: "{{ ha_user }}"
         groups: bluetooth
         append: yes
 
