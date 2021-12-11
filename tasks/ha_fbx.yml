@@ -6,7 +6,7 @@
     supervisor_share: "/usr/share/hassio" #Default
     privileged_mode: False #Default
     version: latest #Default
-    os_agent_version: 1.2.1
+    os_agent_version: 1.2.2
     deb_dist: "{{ lookup('env', 'DIST') | default('bullseye', true) }}"
     ha_user: ha
     ha_port: 8123
