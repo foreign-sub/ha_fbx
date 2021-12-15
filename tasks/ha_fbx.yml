@@ -78,20 +78,20 @@
       args:
         warn: false
 
-    - name: Add Docker GPG apt Key
+    - name: add Docker GPG apt Key
       apt_key:
         url: https://download.docker.com/linux/debian/gpg
         state: present
 
-    - name: Add Docker Repository
+    - name: add Docker Repository
       apt_repository:
         repo: deb https://download.docker.com/linux/debian {{ deb_dist }} stable
         state: present
 
-    - name: Update apt and install docker-ce
+    - name: update apt and install docker-ce
       apt: update_cache=yes name=docker-ce state=latest
 
-    - name: Install Docker Module for Python
+    - name: install Docker Module for Python
       pip:
         name: docker
 
@@ -128,7 +128,7 @@
       command: apt-get purge -y modemmanager
       become: yes
 
-    - name: clean apt cache
+    - name: autoclean apt cache
       apt:
         autoclean: yes
 
@@ -136,7 +136,7 @@
       apt:
         autoremove: yes
 
-    - name: Install os-agent
+    - name: install os-agent
       apt:
         deb: https://github.com/home-assistant/os-agent/releases/download/{{ os_agent_version }}/os-agent_{{ os_agent_version }}_linux_aarch64.deb
 
