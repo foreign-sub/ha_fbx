@@ -75,6 +75,8 @@
     - name: clean apt cache
       command: apt-get clean
       become: yes
+      args:
+        warn: false
 
     - name: Add Docker GPG apt Key
       apt_key:
