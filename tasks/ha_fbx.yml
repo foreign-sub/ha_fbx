@@ -8,6 +8,13 @@
     version: latest #Default
     os_agent_version: 1.2.2
     deb_dist: "{{ lookup('env', 'DIST') | default('bullseye', true) }}"
+    grub_cmdline_path: /etc/default/grub
+    grub_cmdline:
+      - consoleblank=0
+      - cgroup_enable=cpuset cgroup_enable=memory
+      - cgroup_memory=1
+      - systemd.unified_cgroup_hierarchy=false
+      - systemd.legacy_systemd_cgroup_controller=false
     ha_user: ha
     ha_port: 8123
     ha_fbx:
@@ -140,7 +147,25 @@
       apt:
         deb: https://github.com/home-assistant/os-agent/releases/download/{{ os_agent_version }}/os-agent_{{ os_agent_version }}_linux_aarch64.deb
 
+    - name: checking grub cmdline
+      shell: "grep 'GRUB_CMDLINE_LINUX=.*cgroup_enable=cpuset.*' {{ grub_cmdline_path }}"
+      register: check_grub_cfg
+      changed_when: false
+      failed_when: false
+
+    - name: update grub cmdline
+      lineinfile:
+        dest: "{{ grub_cmdline_path }}"
+        line: GRUB_CMDLINE_LINUX="{{ grub_cmdline | join(' ') }}"
+        regexp: '^GRUB_CMDLINE_LINUX="'
+      when: '"cgroup_enable=cpuset" not in check_grub_cfg'
+      notify: update grub
+
   handlers:
     - name: reload systemd services
       systemd:
         daemon_reload: yes
+    - name: update grub
+      command:
+        cmd: >
+          /usr/sbin/update-grub
