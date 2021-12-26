@@ -62,15 +62,13 @@
             "destination": "/etc/dbus-1/system.d/pa-system.conf"
         },
         {
-            "type": "shell",
-            "inline": [
-                "sudo /usr/bin/patch /usr/lib/os-release {{user `init_path`}}/os-release.patch"
-            ]
-        },        
+            "type": "file",
+            "source": "{{user `init_path`}}/os-release",
+            "destination": "/usr/lib/os-release"
+        },
         {
             "type": "shell",
             "inline": [
-                "sudo apt-get clean",
                 "sudo apt-get update",
                 "sudo apt-get install -yqq jq udisks2 libglib2.0-bin network-manager apt-transport-https ca-certificates gnupg-agent software-properties-common gnupg unzip bluetooth rauc-service"
             ]
