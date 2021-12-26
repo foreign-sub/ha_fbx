@@ -1,0 +1,17 @@
+2c2
+< NAME="Debian GNU/Linux"
+---
+> NAME="Hafbxos Debian GNU/Linux"
+7c7
+< HOME_URL="https://www.debian.org/"
+---
+> HOME_URL="https://github.com/foreign-sub/ha_fbx/"
+9c9,14
+< BUG_REPORT_URL="https://bugs.debian.org/"
+---
+> BUG_REPORT_URL="https://github.com/foreign-sub/ha_fbx/issues"
+> CPE_NAME=cpe:2.3:o:home-assistant:hafbxos:11.0::production::::wtf:*
+> VARIANT="Home Assistant OS for Freebox Delta"
+> VARIANT_ID=hafbxos
+> SUPERVISOR_MACHINE=qemuarm-64
+> SUPERVISOR_ARCH=aarch64
