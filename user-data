@@ -1,0 +1,117 @@
+## template: jinja
+#cloud-config
+system_info:
+  distro: debian
+  default_user:
+    name: ha
+    gecos: Home Assistant
+    groups: [adm, audio, cdrom, netdev, plugdev, sudo, video, docker, bluetooth]
+    sudo: ["ALL=(ALL) NOPASSWD:ALL"]
+    shell: /bin/bash
+password: password
+chpasswd: { expire: False }
+ssh_pwauth: True
+
+groups:
+  - docker
+
+users:
+  - default
+
+#
+apt:
+  sources:
+    docker.list:
+      source: deb https://download.docker.com/linux/debian/ $RELEASE stable
+      keyid: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+apt_preserve_sources_list: true
+package_update: false
+#package_upgrade: true
+packages:
+  - jq
+  - udisks2
+  - libglib2.0-bin
+  - network-manager
+  - apt-transport-https
+  - ca-certificates
+  - gnupg-agent
+  - qemu-guest-agent
+  - software-properties-common
+  - docker-ce
+  - rauc-service
+  - unzip
+  - bluetooth
+  - cifs-utils
+  - avahi-daemon
+  - avahi-utils
+
+# set timezone
+timezone: Europe/Paris
+ntp:
+  enabled: true
+disable_ec2_metadata: true
+
+# 2G swap
+swap:
+  filename: /swapfile
+  size: 2147483648
+
+# enable forwarding
+write_files:
+  - path: /etc/sysctl.d/enabled_ip_forwarding.conf
+    content: |
+      net.ipv4.conf.all.forwarding=1
+      net.ipv4.conf.default.forwarding=1
+      net.ipv6.conf.all.forwarding=1
+      net.ipv6.conf.default.forwarding=1
+
+#
+bootcmd:
+  # setup gpg early if missing
+  - type gpg >/dev/null 2>&1 || DEBIAN_FRONTEND=noninteractive apt-get -yqq update
+  - type gpg >/dev/null 2>&1 || DEBIAN_FRONTEND=noninteractive apt-get -yqq install gnupg
+runcmd:
+  - DEB_BUILD_ARCH=$(dpkg --print-architecture)
+  # fix security source if needed
+  - sed -i 's/bullseye\/updates/bullseye-security/g' /etc/apt/sources.list
+  # disable deb-src
+  - sed -Ei 's/^deb-src /# deb-src /' /etc/apt/sources.list
+  # remove modemmanager
+  - DEBIAN_FRONTEND=noninteractive apt-get -yqq purge modemmanager
+  # setup ha os agent
+  - wget -q https://glare.now.sh/home-assistant/os-agent/linux_{{ v1.machine }}.deb
+  - dpkg -i linux_{{ v1.machine }}.deb
+  - rm linux_{{ v1.machine }}.deb
+  # setup ha
+  - echo homeassistant-supervised ha/machine-type select qemuarm-64 | debconf-set-selections
+  - wget -q https://github.com/home-assistant/supervised-installer/releases/latest/download/homeassistant-supervised.deb
+  - DEBIAN_FRONTEND=noninteractive dpkg -i homeassistant-supervised.deb
+  - rm homeassistant-supervised.deb
+  # update kernel cmdline
+  - sed -i "s/GRUB_CMDLINE_LINUX=\"\(.*\)\"/GRUB_CMDLINE_LINUX=\"\1 consoleblank=0 acpi_osi=Linux cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 systemd.unified_cgroup_hierarchy=false systemd.legacy_systemd_cgroup_controller=false swapaccount=1\"/" /etc/default/grub
+  - /usr/sbin/update-grub
+  # remove unused packages
+  - DEBIAN_FRONTEND=noninteractive apt-get -yqq autoremove
+  - apt-get clean
+  # setup hacs
+  - echo Waiting for home assistant onboarding && sleep 3
+  - timeout 1200 bash -c '{ until exec 3<>/dev/tcp/localhost/8123; do sleep 10; done } > /dev/null 2>&1 || [ "$?" = 1 ]'
+  - echo HA onboarding ready @ http://{{ v1.local_hostname }}.local:8123
+  - echo Waiting for home assistant setup && sleep 3
+  - timeout 1200 bash -c '{ until [ -f "/usr/share/hassio/homeassistant/home-assistant.log" ]; do sleep 10; done } > /dev/null 2>&1 || [ "$?" = 1 ]'
+  - cd /usr/share/hassio/homeassistant/ && wget -q -O - https://install.hacs.xyz | bash -
+
+final_message: "Init finished in $UPTIME seconds"
+
+power_state:
+  delay: "0"
+  mode: reboot
+  message: Setup complete for {{ v1.local_hostname }}, rebooting
+  timeout: 60
+  condition: True
+
+merge_how:
+ - name: list
+   settings: [append]
+ - name: dict
+   settings: [no_replace, recurse_list]
