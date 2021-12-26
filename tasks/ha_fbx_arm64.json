@@ -1,6 +1,6 @@
 {
     "variables": {
-        "img_mount_path": "/tmp/mnt",
+        "img_mount_path": "/tmp/mnt"
     },
     "builders": [
         {
