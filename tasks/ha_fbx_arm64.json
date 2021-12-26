@@ -46,6 +46,12 @@
     ],
     "provisioners": [
         {
+            "type": "shell",
+            "inline": [
+                "sudo mkdir -p /var/lib/cloud/seed/nocloud-net"
+            ]
+        },        
+        {
             "type": "file",
             "source": "{{user `init_path`}}/nocloud-net",
             "destination": "/var/lib/cloud/seed"
