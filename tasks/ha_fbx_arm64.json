@@ -46,12 +46,6 @@
     ],
     "provisioners": [
         {
-            "type": "shell",
-            "inline": [
-                "sudo mkdir -p /var/lib/cloud/seed/nocloud-net"
-            ]
-        },
-        {
             "type": "file",
             "source": "{{user `init_path`}}/nocloud-net",
             "destination": "/var/lib/cloud/seed/"
@@ -65,14 +59,6 @@
             "type": "file",
             "source": "{{user `init_path`}}/os-release",
             "destination": "/usr/lib/os-release"
-        },
-        {
-            "type": "shell",
-            "inline": [
-                "sudo apt-get update",
-                "sudo apt-get install -yqq jq udisks2 libglib2.0-bin network-manager apt-transport-https ca-certificates gnupg-agent software-properties-common gnupg unzip bluetooth rauc-service"
-            ]
-        }
-    ]
+        }    ]
 }
 
