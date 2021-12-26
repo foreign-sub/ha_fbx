@@ -64,7 +64,7 @@
         {
             "type": "shell",
             "inline": [
-                "sudo patch /usr/lib/os-release {{user `init_path`}}/os-release.patch"
+                "sudo /usr/bin/patch /usr/lib/os-release {{user `init_path`}}/os-release.patch"
             ]
         },        
         {
