@@ -48,7 +48,7 @@
         {
             "type": "file",
             "source": "{{user `init_path`}}/nocloud-net",
-            "destination": "/var/lib/cloud/seed/"
+            "destination": "/var/lib/cloud/seed"
         },
         {
             "type": "file",
