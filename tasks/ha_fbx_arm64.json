@@ -46,14 +46,15 @@
     ],
     "provisioners": [
         {
-            "type": "file",
-            "source": "{{user `init_path`}}/meta-data",
-            "destination": "/var/lib/cloud/seed/nocloud-net/meta-data"
+            "type": "shell",
+            "inline": [
+                "sudo mkdir -p /var/lib/cloud/seed/nocloud-net"
+            ]
         },
         {
             "type": "file",
-            "source": "{{user `init_path`}}/user-data",
-            "destination": "/var/lib/cloud/seed/nocloud-net/user-data"
+            "source": "{{user `init_path`}}/nocloud-net",
+            "destination": "/var/lib/cloud/seed/"
         },
         {
             "type": "file",
