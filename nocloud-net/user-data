@@ -44,6 +44,8 @@ packages:
   - cifs-utils
   - avahi-daemon
   - avahi-utils
+  - libmicrohttpd12
+  - systemd-journal-remote
 
 # set timezone
 timezone: Europe/Paris
