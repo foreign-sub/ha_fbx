@@ -5,7 +5,7 @@ system_info:
   default_user:
     name: ha
     gecos: Home Assistant
-    groups: [adm, audio, cdrom, netdev, plugdev, sudo, video, docker, bluetooth]
+    groups: [adm, audio, cdrom, libvirt, plugdev, sudo, video, docker, bluetooth]
     sudo: ["ALL=(ALL) NOPASSWD:ALL"]
     shell: /bin/bash
 password: password
