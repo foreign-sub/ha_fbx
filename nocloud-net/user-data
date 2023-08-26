@@ -79,9 +79,9 @@ bootcmd:
 runcmd:
   - DEB_BUILD_ARCH=$(dpkg --print-architecture)
   # fix security source if needed
-  - sed -i 's/bullseye\/updates/bullseye-security/g' /etc/apt/sources.list
+  # - sed -i 's/bullseye\/updates/bullseye-security/g' /etc/apt/sources.list
   # disable deb-src
-  - sed -Ei 's/^deb-src /# deb-src /' /etc/apt/sources.list
+  - sed -Ei 's/^deb-src /# deb-src /' /etc/apt/sources.list.d/debian.sources
   # remove modemmanager
   - DEBIAN_FRONTEND=noninteractive apt-get -yqq purge modemmanager
   # setup ha os agent
