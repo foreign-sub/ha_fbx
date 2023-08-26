@@ -88,6 +88,8 @@ runcmd:
   - curl -LO $(curl -s https://api.github.com/repos/home-assistant/os-agent/releases | grep browser_download_url | grep '{{ v1.machine }}[.]deb' | head -n 1 | cut -d '"' -f 4)
   - dpkg -i os-agent_*_linux_{{ v1.machine }}.deb
   - rm os-agent_*_linux_{{ v1.machine }}.deb
+  # add user to netdev group
+  - usermod -a -G netdev $(users)
   # setup ha
   - echo homeassistant-supervised ha/machine-type select qemuarm-64 | debconf-set-selections
   - wget -q https://github.com/home-assistant/supervised-installer/releases/latest/download/homeassistant-supervised.deb
