@@ -26,8 +26,8 @@ jobs:
           echo "ARM_IMG=${ARM_IMG}" >> $GITHUB_ENV
           ARCH="arm64"
           FLAVOR="generic"
-          RELEASE="bullseye"
-          REL_VERSION="11"
+          RELEASE="bookworm"
+          REL_VERSION="12"
           REL_DATE="latest"
           DEB_IMG="https://cdimage.debian.org/images/cloud/${RELEASE}/daily/${REL_DATE}/debian-${REL_VERSION}-${FLAVOR}-${ARCH}-daily.qcow2"
           #UBU_IMG="https://cloud-images.ubuntu.com/eoan/current/eoan-server-cloudimg-arm64.img"
@@ -47,8 +47,8 @@ jobs:
           unzip /tmp/packer.zip -d /tmp
           sudo mv /tmp/packer /usr/bin/packer
           git clone https://github.com/foreign-sub/packer-builder-arm-image.git /tmp/packer-builder-arm-image
-          cd /tmp/packer-builder-arm-image && git checkout testing
-          cd /tmp/packer-builder-arm-image && go get -d ./... && go build
+          cd /tmp/packer-builder-arm-image && git checkout testingup
+          cd /tmp/packer-builder-arm-image && go mod download && go build
           sudo cp /tmp/packer-builder-arm-image/packer-builder-arm-image /usr/bin
       - name: Download image
         run: |
