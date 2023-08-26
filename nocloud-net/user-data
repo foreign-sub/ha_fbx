@@ -46,6 +46,10 @@ packages:
   - avahi-utils
   - libmicrohttpd12
   - systemd-journal-remote
+  - systemd-resolved
+  - lsb-release
+  - wget
+  - curl
 
 # set timezone
 timezone: Europe/Paris
