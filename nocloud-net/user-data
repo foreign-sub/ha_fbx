@@ -78,6 +78,8 @@ bootcmd:
   - type gpg >/dev/null 2>&1 || DEBIAN_FRONTEND=noninteractive apt-get -yqq install gnupg
 runcmd:
   - DEB_BUILD_ARCH=$(dpkg --print-architecture)
+  # fix pa rights
+  - chmod 644 /etc/dbus-1/system.d/pa-system.conf
   # fix security source if needed
   # - sed -i 's/bullseye\/updates/bullseye-security/g' /etc/apt/sources.list
   # disable deb-src
@@ -101,12 +103,15 @@ runcmd:
   # remove unused packages
   - DEBIAN_FRONTEND=noninteractive apt-get -yqq autoremove
   - apt-get clean
-  # setup hacs
+  # onboarding
   - echo Waiting for home assistant onboarding && sleep 3
   - timeout 1200 bash -c '{ until exec 3<>/dev/tcp/localhost/8123; do sleep 10; done } > /dev/null 2>&1 || [ "$?" = 1 ]'
   - echo HA onboarding ready @ http://{{ v1.local_hostname }}.local:8123
   - echo Waiting for home assistant setup && sleep 3
   - timeout 1200 bash -c '{ until [ -f "/usr/share/hassio/homeassistant/home-assistant.log" ]; do sleep 10; done } > /dev/null 2>&1 || [ "$?" = 1 ]'
+  # allow backup restore
+  - ha jobs options --ignore-conditions internet_host
+  # setup hacs
   - cd /usr/share/hassio/homeassistant/ && wget -q -O - https://install.hacs.xyz | bash -
 
 final_message: "Init finished in $UPTIME seconds"
