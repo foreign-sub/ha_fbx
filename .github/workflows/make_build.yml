@@ -47,7 +47,7 @@ jobs:
           unzip /tmp/packer.zip -d /tmp
           sudo mv /tmp/packer /usr/bin/packer
           git clone https://github.com/foreign-sub/packer-builder-arm-image.git /tmp/packer-builder-arm-image
-          cd /tmp/packer-builder-arm-image && git checkout testingup
+          cd /tmp/packer-builder-arm-image && git checkout testing
           cd /tmp/packer-builder-arm-image && go mod download && go build
           sudo cp /tmp/packer-builder-arm-image/packer-builder-arm-image /usr/bin
       - name: Download image
