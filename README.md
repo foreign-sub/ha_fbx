@@ -1,6 +1,6 @@
 # ha_fbx
 
-*Home assistant VM image for Freebox Delta (arm64)*
+*Home assistant VM image for Freebox Delta and Freebox Ultra (arm64)*
 
 ## How it works
 
@@ -52,7 +52,7 @@ ssh ha@hafbx.local
   * While the default setup should work for most users, you can also choose to make your own custom setup
   * Add the `VM Configuration` settings as below
 
-> Cloud-init : [x]  
+> Cloud-init : [x]
 > Hostname : mycustomhahostname # (or hafbx)
 
 * Edit and paste the content from [no-cloud/user-data](https://raw.githubusercontent.com/foreign-sub/ha_fbx/master/nocloud-net/user-data) in the cloud-init user-data field
@@ -64,6 +64,7 @@ ssh ha@hafbx.local
 ## Notes
 * HA versions reported in the release notes are the available versions at the time of the release.
 * The script will always install the latest release from Home Assistant, so it may differ from the release notes.
+* [HACS](https://hacs.xyz/docs/basic/getting_started) initial setup requires additional configuration steps, please refer to the [official documentation](https://hacs.xyz/docs/configuration/basic)
 * HACS addons usually requires home assistant to restart or at least a browser refresh.
 * Remember to enable "Advanced mode" in your user profile (Click on your name in the bottom left of the HA UI), this will allow you to configure the Lovelace dashboard ressources through the UI (Configuration -> Lovelace -> Ressources).
 
