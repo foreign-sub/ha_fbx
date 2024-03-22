@@ -10,7 +10,7 @@
 < BUG_REPORT_URL="https://bugs.debian.org/"
 ---
 > BUG_REPORT_URL="https://github.com/foreign-sub/ha_fbx/issues"
-> CPE_NAME=cpe:2.3:o:home-assistant:hafbxos:11.0::production::::wtf:*
+> CPE_NAME=cpe:2.3:o:home-assistant:hafbxos:12.0::production::::wtf:*
 > VARIANT="Home Assistant OS for Freebox Delta"
 > VARIANT_ID=hafbxos
 > SUPERVISOR_MACHINE=qemuarm-64
