@@ -50,6 +50,9 @@ packages:
   - lsb-release
   - wget
   - curl
+  - apparmor
+  - dbus
+  - nfs-common
 
 # set timezone
 timezone: Europe/Paris
