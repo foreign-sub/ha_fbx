@@ -115,12 +115,12 @@ runcmd:
   # allow backup restore
   - ha jobs options --ignore-conditions internet_host
   # setup hacs
-  - cd /usr/share/hassio/homeassistant/ && wget -q -O - https://install.hacs.xyz | bash -
+  - wget -O - https://get.hacs.xyz | bash -
 
 final_message: "Init finished in $UPTIME seconds"
 
 power_state:
-  delay: "0"
+  delay: "now"
   mode: reboot
   message: Setup complete for {{ v1.local_hostname }}, rebooting
   timeout: 60
