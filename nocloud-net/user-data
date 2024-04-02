@@ -89,6 +89,11 @@ runcmd:
   - sed -Ei 's/^deb-src /# deb-src /' /etc/apt/sources.list.d/debian.sources
   # remove modemmanager
   - DEBIAN_FRONTEND=noninteractive apt-get -yqq purge modemmanager
+  # update nm config
+  - echo "managed=1" >> /etc/NetworkManager/NetworkManager.conf
+  # update kernel cmdline
+  - sed -i "s/GRUB_CMDLINE_LINUX=\"\(.*\)\"/GRUB_CMDLINE_LINUX=\"\1 consoleblank=0 acpi_osi=Linux cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 systemd.unified_cgroup_hierarchy=false systemd.legacy_systemd_cgroup_controller=false\"/" /etc/default/grub
+  - /usr/sbin/update-grub
   # setup ha os agent
   - curl -LO $(curl -s https://api.github.com/repos/home-assistant/os-agent/releases | grep browser_download_url | grep '{{ v1.machine }}[.]deb' | head -n 1 | cut -d '"' -f 4)
   - dpkg -i os-agent_*_linux_{{ v1.machine }}.deb
@@ -100,9 +105,6 @@ runcmd:
   - wget -q https://github.com/home-assistant/supervised-installer/releases/latest/download/homeassistant-supervised.deb
   - DEBIAN_FRONTEND=noninteractive dpkg -i homeassistant-supervised.deb
   - rm homeassistant-supervised.deb
-  # update kernel cmdline
-  - sed -i "s/GRUB_CMDLINE_LINUX=\"\(.*\)\"/GRUB_CMDLINE_LINUX=\"\1 consoleblank=0 acpi_osi=Linux cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 systemd.unified_cgroup_hierarchy=false systemd.legacy_systemd_cgroup_controller=false swapaccount=1\"/" /etc/default/grub
-  - /usr/sbin/update-grub
   # remove unused packages
   - DEBIAN_FRONTEND=noninteractive apt-get -yqq autoremove
   - apt-get clean
@@ -116,6 +118,13 @@ runcmd:
   - ha jobs options --ignore-conditions internet_host
   # setup hacs
   - wget -O - https://get.hacs.xyz | bash -
+  # cooldown journald docker mount logs ref https://github.com/systemd/systemd/issues/6432
+  - echo "MaxLevelStore=notice" >> /etc/systemd/journald.conf
+  - echo "MaxLevelSyslog=notice" >> /etc/systemd/journald.conf
+  # reset ha jobs
+  - ha jobs reset
+  # disable systemd-networkd (will test removal)
+  # - systemctl disable --now systemd-networkd.service
 
 final_message: "Init finished in $UPTIME seconds"
 
