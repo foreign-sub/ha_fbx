@@ -20,7 +20,7 @@ jobs:
           sudo apt-get install kpartx binfmt-support qemu-user-static qemu-utils libguestfs-tools ansible
       - name: Set env
         run: |
-          PACKER_VERSION="1.7.8"
+          PACKER_VERSION="1.10.2"
           echo "PACKER_VERSION=${PACKER_VERSION}" >> $GITHUB_ENV
           ARM_IMG="/tmp/arm64.img"
           echo "ARM_IMG=${ARM_IMG}" >> $GITHUB_ENV
