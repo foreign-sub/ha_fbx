@@ -5,7 +5,7 @@ system_info:
   default_user:
     name: ha
     gecos: Home Assistant
-    groups: [adm, audio, cdrom, libvirt, plugdev, sudo, video, docker, bluetooth, systemd-journal]
+    groups: [adm, audio, cdrom, libvirt, netdev, plugdev, sudo, video, docker, bluetooth, systemd-journal]
     sudo: ["ALL=(ALL) NOPASSWD:ALL"]
     shell: /bin/bash
 password: password
@@ -99,12 +99,14 @@ runcmd:
   - dpkg -i os-agent_*_linux_{{ v1.machine }}.deb
   - rm os-agent_*_linux_{{ v1.machine }}.deb
   # add user to netdev group
-  - usermod -a -G netdev $(users)
+  # - usermod -a -G netdev $(users)
   # setup ha
   - echo homeassistant-supervised ha/machine-type select qemuarm-64 | debconf-set-selections
   - wget -q https://github.com/home-assistant/supervised-installer/releases/latest/download/homeassistant-supervised.deb
   - DEBIAN_FRONTEND=noninteractive dpkg -i homeassistant-supervised.deb
   - rm homeassistant-supervised.deb
+  # fix nm config now
+  - echo "\nmanaged=1" >> /etc/NetworkManager/NetworkManager.conf
   # remove unused packages
   - DEBIAN_FRONTEND=noninteractive apt-get -yqq autoremove
   - apt-get clean
