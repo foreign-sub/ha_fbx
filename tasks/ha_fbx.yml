@@ -11,9 +11,7 @@
     grub_cmdline_path: /etc/default/grub
     grub_cmdline:
       - consoleblank=0
-      - cgroup_enable=cpuset
       - systemd.unified_cgroup_hierarchy=false
-      - systemd.legacy_systemd_cgroup_controller=false
     ha_user: ha
     ha_port: 8123
     ha_fbx:
