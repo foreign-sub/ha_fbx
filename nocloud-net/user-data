@@ -1,11 +1,14 @@
 ## template: jinja
 #cloud-config
+# Jinja variables:
+# {% set USER_NAME='ha' %}
+
 system_info:
   distro: debian
   default_user:
     name: ha
     gecos: Home Assistant
-    groups: [adm, audio, cdrom, libvirt, netdev, plugdev, sudo, video, docker, bluetooth, systemd-journal]
+    groups: [adm, audio, cdrom, libvirt, plugdev, sudo, video, docker, bluetooth, systemd-journal]
     sudo: ["ALL=(ALL) NOPASSWD:ALL"]
     shell: /bin/bash
 password: password
@@ -20,11 +23,11 @@ users:
 
 #
 apt:
+  preserve_sources_list: true
   sources:
     docker.list:
       source: deb https://download.docker.com/linux/debian/ $RELEASE stable
       keyid: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
-apt_preserve_sources_list: true
 package_update: false
 #package_upgrade: true
 packages:
@@ -99,7 +102,7 @@ runcmd:
   - dpkg -i os-agent_*_linux_{{ v1.machine }}.deb
   - rm os-agent_*_linux_{{ v1.machine }}.deb
   # add user to netdev group
-  # - usermod -a -G netdev $(users)
+  - usermod -a -G netdev {{ USER_NAME }}
   # setup ha
   - echo homeassistant-supervised ha/machine-type select qemuarm-64 | debconf-set-selections
   - wget -q https://github.com/home-assistant/supervised-installer/releases/latest/download/homeassistant-supervised.deb
